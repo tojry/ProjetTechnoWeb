@@ -13,6 +13,7 @@ async function bootstrap(config: AppConfig) {
     AppModule,
     new FastifyAdapter({ logger: true }),
   );
+  app.enableCors({ origin: config.cors });
   await app.listen(config.port, config.host);
   Logger.log(
     `Application served at http://${config.host}:${config.port}`,
