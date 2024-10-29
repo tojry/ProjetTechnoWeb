@@ -1,0 +1,70 @@
+<form [formGroup]="registerForm">
+    <input
+      type="text"
+      placeholder="Nom d'utilisateur"
+      formControlName="id"
+    />
+    <div
+      *ngIf="
+        registerForm.get('id')?.dirty &&
+        registerForm.get('id')?.hasError('required')
+      "
+    >
+      <span>Ce champ est obligatoire</span>
+    </div>
+    <div
+      *ngIf="
+        registerForm.get('id')?.dirty &&
+        registerForm.get('id')?.hasError('minlength')
+      "
+    >
+      <span>3 caractères minimum</span>
+    </div>
+    <input
+      type="password"
+      placeholder="Mot de passe"
+      formControlName="password"
+    />
+    <div
+      *ngIf="
+        registerForm.get('password')?.dirty &&
+        registerForm.get('password')?.hasError('required')
+      "
+    >
+      <span>Ce champ est obligatoire</span>
+    </div>
+    <div
+      *ngIf="
+        registerForm.get('password')?.dirty &&
+        registerForm.get('password')?.hasError('pattern')
+      "
+    >
+      <span>Le mot de passe doit contenir au moins 8 caractères dont une lettre, un chiffre et un caractère spécial.</span>
+    </div>
+    <input
+      type="password"
+      placeholder="Confirmer le mot de passe"
+      formControlName="confirmPassword"
+    />
+    <div
+      *ngIf="
+        registerForm.get('confirmPassword')?.dirty &&
+        registerForm.get('confirmPassword')?.hasError('required')
+      "
+    >
+      <span>Ce champ est obligatoire</span>
+    </div>
+    <div *ngIf="registerForm.get('confirmPassword')?.dirty && registerForm.hasError('passwordMismatch')">
+      <span>Les mots de passe ne correspondent pas</span>
+    </div>
+    <button type="submit" (click)="registerUser(registerForm.value)">
+      Créer un compte
+    </button>
+    <div *ngIf="!!errorMessage">
+        <span>{{ errorMessage }}</span>
+    </div>
+    <div>
+      <span>Déjà inscrit ? <a [routerLink]="['/login']">Se connecter</a></span>
+    </div>
+  </form>
+  

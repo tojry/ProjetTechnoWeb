@@ -1,0 +1,39 @@
+<form [formGroup]="loginForm">
+    <input
+      type="text"
+      placeholder="Nom d'utilisateur"
+      formControlName="id"
+    />
+    <div
+      *ngIf="
+        loginForm.get('id')?.dirty &&
+        loginForm.get('id')?.hasError('required')
+      "
+    >
+      <span>Ce champ est obligatoire</span>
+    </div>
+    <input
+      type="password"
+      placeholder="Mot de passe"
+      formControlName="password"
+    />
+    <div
+      *ngIf="
+        loginForm.get('password')?.dirty &&
+        loginForm.get('password')?.hasError('required')
+      "
+    >
+      <span>Ce champ est obligatoire</span>
+    </div>
+    <button type="submit" (click)="login(loginForm.value)">
+      Se connecter
+    </button>
+    <div *ngIf="!!errorMessage">
+        <span>{{ errorMessage }}</span>
+    </div>
+    <div>
+      <span>Pas encore inscrit ? <a [routerLink]="['/users/register']">Créer un compte</a></span>
+    </div>
+    
+  </form>
+  

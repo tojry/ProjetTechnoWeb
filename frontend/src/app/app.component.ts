@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,21 @@ import { RouterOutlet } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'frontend_test';
+
+  constructor(private _authService: AuthService) {
+
+  }
+
+  get isLoggedIn(): boolean {
+    return this._authService.isLoggedIn;
+  }
+
+  get username(): string | null {
+    return this._authService.username;
+  }
+
+  logout(): void {
+    this._authService.logout();
+  }
+
 }

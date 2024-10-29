@@ -1,1 +1,21 @@
-<p-toolbar> Hello World </p-toolbar>
+<p-toolbar> 
+    
+    <span>
+        <a [routerLink]="['/']">Home</a>
+      </span>
+
+    <span *ngIf="!isLoggedIn">
+        <a [routerLink]="['/login']">Se connecter</a>
+    </span>
+
+    <span *ngIf="!isLoggedIn">
+        <a [routerLink]="['/users/register']">Créer un compte</a>
+    </span>
+
+    <span *ngIf="isLoggedIn">
+        <p>Bienvenue {{ username }}</p>
+        <a (click)="logout()">Se déconnecter</a>
+    </span>
+    
+</p-toolbar>
+<router-outlet></router-outlet>
