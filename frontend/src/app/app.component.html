@@ -9,11 +9,12 @@
     </span>
 
     <span *ngIf="!isLoggedIn">
-        <a [routerLink]="['/users/register']">Créer un compte</a>
+        <a [routerLink]="['/user/register']">Créer un compte</a>
     </span>
 
     <span *ngIf="isLoggedIn">
         <p>Bienvenue {{ username }}</p>
+        <a (click)="navigateToUserInfo()">Mon compte</a>
         <a (click)="logout()">Se déconnecter</a>
     </span>
     

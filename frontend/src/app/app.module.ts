@@ -9,13 +9,15 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { CreateUserComponent } from './create-user/create-user.component';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
+import { UserInfoComponent } from './user-info/user-info.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     CreateUserComponent,
-    LoginComponent
+    LoginComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,

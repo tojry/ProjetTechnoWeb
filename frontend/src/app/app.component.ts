@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { AuthService } from './shared/services/auth.service';
 })
 export class AppComponent {
 
-  constructor(private _authService: AuthService) {
+  constructor(private _authService: AuthService, private _router: Router) {
 
   }
 
@@ -19,6 +19,10 @@ export class AppComponent {
 
   get username(): string | null {
     return this._authService.username;
+  }
+
+  navigateToUserInfo() : void {
+    this._router.navigate(['/user']);
   }
 
   logout(): void {

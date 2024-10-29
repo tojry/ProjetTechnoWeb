@@ -1,3 +1,16 @@
 {
-    "token": "test_token"
+    "users": [
+        {
+            "id": "UserTest1",
+            "token": "token_user_1"
+        },
+        {
+            "id": "UserTest2",
+            "token": "token_user_2"
+        },
+        {
+            "id": "UserTest3",
+            "token": "token_user_3"
+        }
+    ]
 }

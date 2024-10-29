@@ -9,8 +9,7 @@ export const environment = {
     host: 'localhost',
     port: '3000',
     endpoints: {
-      users: '/users',
-      oneUser: '/users/:id',
+      user: '/user',
       login: '/login',
     },
   },

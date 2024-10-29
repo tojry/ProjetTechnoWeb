@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { UserAuth } from '../interfaces/user-auth.interface';
-import { Observable } from 'rxjs';
+import { defaultIfEmpty, Observable } from 'rxjs';
 import { BackendRoutesService } from './backend-routes.service';
+import { User } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,16 @@ export class UserService {
   register(user: UserAuth) : Observable<any>{
 
     return this._http.post<UserAuth>(
-      this._backend.routes.users, 
+      this._backend.routes.user, 
       user, 
       this._options()
+    );
+  }
+
+  fetchUser(): Observable<User>{
+    
+    return this._http.get<User>(
+      this._backend.routes.user
     );
   }
 
