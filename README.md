@@ -10,19 +10,23 @@
   Erreur: 403 si le nom d'utilisateur existe déjà
 
 - GET     /user       (Token avec l'id de l'utilisateur dans le header de la requête)
-  Réponse: { id: string } (pour l'instant, il faudra aussi récupérer les quiz créés par l'utilisateur plus tard)
+  Réponse: { id: string, createdQuizs: Quiz[] } (avec createdQuizs la liste des quiz dont l'author est égal à l'id)
 
 - POST    /login
   Body: { id: string, password: string}
   Réponse: { token: string } (à voir pour le format du token)
   Erreur: 401 si le nom d'utilisateur ou le mot de passe est incorrect
 
+- POST  /quiz
+  Body: Quiz = { author: string, title: string, questions: Question[] } avec Question = { question: string, answers: string[], correctAnswer: number }
+  (l'id du quiz doit être généré par le back)
+
 ```
 - [x] Page de création de compte
 - [x] Page de connexion
 - [x] Page d'info de l'utilisateur
 - [x] Déconnexion
-- [ ] Page de création de quiz
+- [x] Page de création de quiz
 - [ ] Page de réponse à un quiz
 - [ ] Suppression d'un quiz
 - [ ] Affichage de la liste des quiz
