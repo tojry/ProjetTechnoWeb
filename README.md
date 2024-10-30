@@ -24,7 +24,9 @@
 
 - DELETE /quiz/:id
   Erreur: 401 si l'id associé au token dans le header est différent de l'id de l'auteur du quiz
-  
+
+- GET   /quiz
+  Réponse: { quiz: Quiz[] } (liste de tous les quizs)
 
 ```
 - [x] Page de création de compte
@@ -35,6 +37,6 @@
 - [ ] Page de réponse à un quiz
 - [ ] Modification d'un quiz
 - [x] Suppression d'un quiz
-- [ ] Affichage de la liste des quiz
+- [x] Affichage de la liste des quiz
 - [ ] Affichage de le liste des quiz d'une catégorie
 - [ ] Recherche d'un quiz

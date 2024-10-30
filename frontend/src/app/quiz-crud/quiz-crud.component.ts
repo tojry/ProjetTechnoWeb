@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class QuizCrudComponent {
 
   private _quizList : Quiz[];
+  private _isCrudMode: boolean = false;
   
   constructor(private _quizService: QuizService, private _router: Router) {
     this._quizList = [];
@@ -21,9 +22,18 @@ export class QuizCrudComponent {
     return this._quizList;
   }
 
+  get isCrudMode() : boolean {
+    return this._isCrudMode;
+  }
+
   @Input()
   set quizList(quizList : Quiz[]) {
     this._quizList = quizList;
+  }
+
+  @Input()
+  set isCrudMode(crudMode: boolean) {
+    this._isCrudMode = crudMode;
   }
 
   delete(quiz: Quiz): void {

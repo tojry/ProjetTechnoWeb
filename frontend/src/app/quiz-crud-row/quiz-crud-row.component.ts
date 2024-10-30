@@ -10,6 +10,7 @@ import { QuizService } from '../shared/services/quiz.service';
 export class QuizCrudRowComponent {
 
   private _quiz : Quiz;
+  private _isCrudMode : boolean = false;
   private readonly _delete$: EventEmitter<Quiz>;
 
   constructor(private _quizService : QuizService) {
@@ -22,9 +23,18 @@ export class QuizCrudRowComponent {
     return this._quiz;
   }
 
+  get isCrudMode() : boolean {
+    return this._isCrudMode;
+  }
+
   @Input()
   set quiz(quiz : Quiz) {
     this._quiz = quiz;
+  }
+
+  @Input()
+  set isCrudMode(crudMode: boolean) {
+    this._isCrudMode = crudMode;
   }
 
   @Output('deleteQuiz') get delete$(): EventEmitter<Quiz> {
