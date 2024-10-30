@@ -1,0 +1,97 @@
+{
+    "quiz": [
+      {
+        "id": 0,
+        "author": "UserTest1",
+        "title": "Test Quiz 1",
+        "questions": [
+          {
+            "question": "Question 1",
+            "answers": [
+              "A",
+              "B",
+              "C"
+            ],
+            "correctAnswer": "2"
+          },
+          {
+            "question": "Question 2",
+            "answers": [
+              "D",
+              "E",
+              "F"
+            ],
+            "correctAnswer": "0"
+          },
+          {
+            "question": "Question 3",
+            "answers": [
+              "G",
+              "H",
+              "I"
+            ],
+            "correctAnswer": "1"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "author": "UserTest2",
+        "title": "Quiz 2",
+        "questions": [
+          {
+            "question": "La 1ère question",
+            "answers": [
+              "AA",
+              "BB",
+              "CC"
+            ],
+            "correctAnswer": "2"
+          },
+          {
+            "question": "La 2ème question",
+            "answers": [
+              "DD",
+              "EE",
+              "FF"
+            ],
+            "correctAnswer": "1"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "author": "UserTest1",
+        "title": "Test Quiz 2",
+        "questions": [
+          {
+            "question": "Question 1",
+            "answers": [
+              "A2",
+              "B2",
+              "C2"
+            ],
+            "correctAnswer": "2"
+          },
+          {
+            "question": "Question 2",
+            "answers": [
+              "D2",
+              "E2",
+              "F2"
+            ],
+            "correctAnswer": "0"
+          },
+          {
+            "question": "Question 3",
+            "answers": [
+              "G2",
+              "H2",
+              "I2"
+            ],
+            "correctAnswer": "1"
+          }
+        ]
+      }
+    ]
+  }

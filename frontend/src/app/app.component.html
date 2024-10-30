@@ -13,9 +13,13 @@
     </span>
 
     <span *ngIf="isLoggedIn">
+        <button [routerLink]="['/quiz/new']">Créer un quiz</button>
+    </span>
+
+    <span *ngIf="isLoggedIn">
         <p>Bienvenue {{ username }}</p>
-        <a (click)="navigateToUserInfo()">Mon compte</a>
-        <a (click)="logout()">Se déconnecter</a>
+        <button [routerLink]="['/user']">Mon compte</button>
+        <button (click)="logout()">Se déconnecter</button>
     </span>
     
 </p-toolbar>

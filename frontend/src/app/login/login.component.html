@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form novalidate [formGroup]="loginForm">
     <input
       type="text"
       placeholder="Nom d'utilisateur"
@@ -25,7 +25,7 @@
     >
       <span>Ce champ est obligatoire</span>
     </div>
-    <button type="submit" (click)="login(loginForm.value)">
+    <button type="submit" (click)="login(loginForm.value)" [disabled]="loginForm.invalid">
       Se connecter
     </button>
     <div *ngIf="!!errorMessage">

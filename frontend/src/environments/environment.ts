@@ -11,6 +11,8 @@ export const environment = {
     endpoints: {
       user: '/user',
       login: '/login',
+      quiz: '/quiz',
+      oneQuiz: '/quiz/:id',
     },
   },
 };

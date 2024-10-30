@@ -1,1 +1,5 @@
 <p> {{ user.id }}</p>
+
+<button [routerLink]="['/quiz/new']">Créer un quiz</button>
+
+<app-quiz-crud [quizList]="user.createdQuizs"></app-quiz-crud>

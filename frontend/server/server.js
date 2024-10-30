@@ -10,29 +10,35 @@ server.use(jsonServer.bodyParser);
 
 let usersData = require('./data/users/users.json')
 const loginData = require('./data/login/login.json')
+let quizData = require('./data/quiz/quiz.json')
 
 server.get('/users', (req, res) => {
-
   res.status(200).send(loginData);
-  
-})
+});
+
+server.get('/quiz', (req, res) => {
+  res.status(200).send(quizData);
+});
 
 server.get('/user', (req, res) => {
 
     if(loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", "")) === undefined){
       res.status(401).send(req.headers.authorization);
     }else{
+      const userId = usersData.users.find(
+        user => (user.id === loginData.users.find(
+          u => u.token === req.headers.authorization.replace("Bearer ", ""))
+          .id)
+      ).id;
+
       res.status(200).send(
-        { id: 
-          usersData.users.find(
-            user => (user.id === loginData.users.find(
-              u => u.token === req.headers.authorization.replace("Bearer ", ""))
-              .id)
-          ).id 
+        { 
+          id: userId,
+          createdQuizs: quizData.quiz.filter(q => q.author === userId)
         }
       );
     }
-})
+});
 
 server.post('/user', (req, res) => {
 
@@ -43,7 +49,7 @@ server.post('/user', (req, res) => {
     loginData.users.push({id: req.body.id, token: 'token_' + req.body.id});
     res.status(200).send();
   }
-})
+});
 
 server.post('/login', (req, res) => {
 
@@ -52,7 +58,17 @@ server.post('/login', (req, res) => {
   }else{
     res.status(200).send(loginData.users.find(user => user.id === req.body.id));
   }
-})
+});
+
+server.post('/quiz', (req, res) => {
+  
+  const q = {
+    ...req.body,
+    id: quizData.quiz.length
+  }
+  quizData.quiz.push(q);
+  res.status(200).send();
+});
 
 https
   .createServer(

@@ -1,0 +1,35 @@
+<form novalidate [formGroup]="questionForm">
+
+    <label>Question {{questionIndex}}</label>
+    <input
+      type="text"
+      placeholder="Intitulé de la question"
+      formControlName="question"
+    />
+    <div *ngIf="questionForm.get('question')?.dirty && questionForm.get('question')?.hasError('required')">
+      <span>Ce champ est obligatoire</span>
+    </div>
+    
+    <div formArrayName="answers">
+        <div *ngFor="let answer of answers.controls; let i = index">
+            <label>Réponse {{i + 1}}</label>
+            <input [formControlName]="i" type="text" placeholder="Réponse {{i + 1}}" />
+            <div *ngIf="answers.at(i)?.dirty && answers.at(i)?.hasError('required')">
+              <span>Ce champ est obligatoire</span>
+            </div>
+        </div>
+    </div>
+    <label>Réponse correcte</label>
+    <select formControlName="correctAnswer">
+        <option *ngFor="let answer of answers.controls; let i = index" [value]="i">
+          Réponse {{ i + 1 }}
+        </option>
+    </select>
+    <div *ngIf="questionForm.get('correctAnswer')?.dirty && questionForm.get('correctAnswer')?.hasError('required')">
+      <span>Ce champ est obligatoire</span>
+    </div>
+
+    <button *ngIf="questionIndex > 1" type="button" (click)="delete(questionIndex)">Supprimer</button>
+
+  </form>
+  

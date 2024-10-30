@@ -1,0 +1,29 @@
+<form novalidate [formGroup]="createQuizForm">
+
+    <label>Titre</label>
+    <input
+      type="text"
+      placeholder="Titre du quiz"
+      formControlName="title"
+    />
+    <div
+      *ngIf="
+        createQuizForm.get('title')?.dirty &&
+        createQuizForm.get('title')?.hasError('required')
+      "
+    >
+      <span>Ce champ est obligatoire</span>
+    </div>
+
+    <div formArrayName="questions">
+        <app-create-question [questionIndex] ="i+1" [questionForm]="getQuestionFormGroup(question)" (deleteQuestion)="deleteQuestion($event)" *ngFor="let question of questions.controls; let i = index" ></app-create-question>
+    </div>
+
+    <button type="button" (click)="addQuestion()">Ajouter une question</button>
+    <button type="submit" (click)="create(createQuizForm.value)" [disabled]="createQuizForm.invalid">Soumettre le quiz</button>
+    <div *ngIf="!!errorMessage">
+        <span>{{ errorMessage }}</span>
+    </div>
+    
+  </form>
+  

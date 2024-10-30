@@ -10,6 +10,10 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { CreateQuizComponent } from './create-quiz/create-quiz.component';
+import { CreateQuestionComponent } from './create-question/create-question.component';
+import { QuizCrudRowComponent } from './quiz-crud-row/quiz-crud-row.component';
+import { QuizCrudComponent } from './quiz-crud/quiz-crud.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,11 @@ import { UserInfoComponent } from './user-info/user-info.component';
     HomeComponent,
     CreateUserComponent,
     LoginComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    CreateQuizComponent,
+    CreateQuestionComponent,
+    QuizCrudComponent,
+    QuizCrudRowComponent
   ],
   imports: [
     BrowserModule,

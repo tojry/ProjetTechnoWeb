@@ -21,10 +21,6 @@ export class AppComponent {
     return this._authService.username;
   }
 
-  navigateToUserInfo() : void {
-    this._router.navigate(['/user']);
-  }
-
   logout(): void {
     this._authService.logout();
   }

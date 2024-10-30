@@ -1,4 +1,4 @@
-<form [formGroup]="registerForm">
+<form novalidate [formGroup]="registerForm">
     <input
       type="text"
       placeholder="Nom d'utilisateur"
@@ -57,7 +57,7 @@
     <div *ngIf="registerForm.get('confirmPassword')?.dirty && registerForm.hasError('passwordMismatch')">
       <span>Les mots de passe ne correspondent pas</span>
     </div>
-    <button type="submit" (click)="registerUser(registerForm.value)">
+    <button type="submit" (click)="registerUser(registerForm.value)" [disabled]="registerForm.invalid">
       Créer un compte
     </button>
     <div *ngIf="!!errorMessage">

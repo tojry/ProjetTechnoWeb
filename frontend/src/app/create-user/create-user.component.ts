@@ -25,6 +25,7 @@ export class CreateUserComponent {
     private _userService: UserService,
     private _authService: AuthService
   ) {
+    
     this._registerForm = this._buildForm();
     this._errorMessage = '';
   }

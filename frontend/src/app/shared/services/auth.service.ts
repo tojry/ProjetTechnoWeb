@@ -4,6 +4,7 @@ import { UserAuth } from '../interfaces/user-auth.interface';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { BackendRoutesService } from './backend-routes.service';
 import { JWTToken } from '../interfaces/jwt.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
 
   private _isLoggedIn: boolean = this._hasToken();
 
-  constructor(private _http: HttpClient, private _backend: BackendRoutesService) { }
+  constructor(private _http: HttpClient, private _router: Router, private _backend: BackendRoutesService) { }
 
   get username(): string | null {
     return localStorage.getItem('username');
@@ -42,6 +43,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     this._isLoggedIn = false;
+    this._router.navigate(['/home']);
   }
 
   private _hasToken(): boolean {
