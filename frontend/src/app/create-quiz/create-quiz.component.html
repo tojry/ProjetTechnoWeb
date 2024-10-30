@@ -15,6 +15,12 @@
       <span>Ce champ est obligatoire</span>
     </div>
 
+    <select formControlName="category">
+      <option *ngFor="let cat of categories">
+        {{ cat }}
+      </option>
+    </select>
+
     <div formArrayName="questions">
         <app-create-question [questionIndex] ="i+1" [questionForm]="getQuestionFormGroup(question)" (deleteQuestion)="deleteQuestion($event)" *ngFor="let question of questions.controls; let i = index" ></app-create-question>
     </div>

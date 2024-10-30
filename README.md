@@ -18,7 +18,8 @@
   Erreur: 401 si le nom d'utilisateur ou le mot de passe est incorrect
 
 - POST  /quiz
-  Body: Quiz = { author: string, title: string, questions: Question[] } avec Question = { question: string, answers: string[], correctAnswer: number }
+  Body: Quiz = { author: string, title: string, category: string, questions: Question[] } 
+  avec Question = { question: string, answers: string[], correctAnswer: number }
   (l'id du quiz doit être généré par le back)
 
 - DELETE /quiz/:id
@@ -32,6 +33,7 @@
 - [x] Déconnexion
 - [x] Page de création de quiz
 - [ ] Page de réponse à un quiz
+- [ ] Modification d'un quiz
 - [x] Suppression d'un quiz
 - [ ] Affichage de la liste des quiz
 - [ ] Affichage de le liste des quiz d'une catégorie
