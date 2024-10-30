@@ -31,8 +31,8 @@
 - [x] Page d'info de l'utilisateur
 - [x] Déconnexion
 - [x] Page de création de quiz
-- [x] Page de réponse à un quiz
-- [ ] Suppression d'un quiz
+- [ ] Page de réponse à un quiz
+- [x] Suppression d'un quiz
 - [ ] Affichage de la liste des quiz
 - [ ] Affichage de le liste des quiz d'une catégorie
 - [ ] Recherche d'un quiz
