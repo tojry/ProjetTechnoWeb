@@ -20,17 +20,13 @@ export class QuizService {
     );
   }
 
-  /*
   delete(quiz: Quiz): Observable<any> {
     
-    return
-    
     return this._http.delete<Quiz>(
-      this._backend.routes.oneQuiz.replace(':id', quiz.id.toString()),
-    )
-      
+      this._backend.routes.oneQuiz.replace(':id', quiz.id!.toString())
+    );
   }
-  */
+
 
   /**
    * Function to return request options

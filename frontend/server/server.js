@@ -23,7 +23,7 @@ server.get('/quiz', (req, res) => {
 server.get('/user', (req, res) => {
 
     if(loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", "")) === undefined){
-      res.status(401).send(req.headers.authorization);
+      res.status(401).send();
     }else{
       const userId = usersData.users.find(
         user => (user.id === loginData.users.find(
@@ -68,6 +68,18 @@ server.post('/quiz', (req, res) => {
   }
   quizData.quiz.push(q);
   res.status(200).send();
+});
+
+server.delete('/quiz/:id', (req, res) => {
+  
+  const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;
+
+  if(bearerId === undefined || bearerId !== quizData.quiz.find(q => q.id.toString() === req.params.id).author){
+    res.status(401).send();
+  }else{
+    quizData.quiz = quizData.quiz.filter(q => q.id.toString() !== req.params.id);
+    res.status(200).send();
+  }  
 });
 
 https

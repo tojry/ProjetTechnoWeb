@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Quiz } from '../shared/interfaces/quiz.interface';
 import { QuizService } from '../shared/services/quiz.service';
 
@@ -10,10 +10,12 @@ import { QuizService } from '../shared/services/quiz.service';
 export class QuizCrudRowComponent {
 
   private _quiz : Quiz;
+  private readonly _delete$: EventEmitter<Quiz>;
 
   constructor(private _quizService : QuizService) {
   
     this._quiz = {} as Quiz;
+    this._delete$ = new EventEmitter<Quiz>();
   }
 
   get quiz() : Quiz {
@@ -25,12 +27,16 @@ export class QuizCrudRowComponent {
     this._quiz = quiz;
   }
 
+  @Output('deleteQuiz') get delete$(): EventEmitter<Quiz> {
+    return this._delete$;
+  }
+
   update(quiz : Quiz) { 
     console.log('Update quiz');
   }
 
   delete(quiz : Quiz) { 
-    console.log('Delete quiz');
+    this._delete$.emit(quiz);
   }
 
 }
