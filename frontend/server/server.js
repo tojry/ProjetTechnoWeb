@@ -70,6 +70,15 @@ server.post('/quiz', (req, res) => {
   res.status(200).send();
 });
 
+server.get('/quiz/:id', (req, res) => {
+
+  if(quizData.quiz.find(q => q.id.toString() === req.params.id) === undefined){
+    res.status(404).send();
+  }else{
+    res.status(200).send(quizData.quiz.find(q => q.id.toString() === req.params.id));
+  }
+})
+
 server.delete('/quiz/:id', (req, res) => {
   
   const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;

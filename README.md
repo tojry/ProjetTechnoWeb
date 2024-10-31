@@ -28,13 +28,17 @@
 - GET   /quiz
   Réponse: { quiz: Quiz[] } (liste de tous les quizs)
 
+- GET   /quiz/:id   (id du quiz)
+  Réponse: { quiz: Quiz }
+  Erreur: 404 si aucun quiz ne correspond à l'id
+
 ```
 - [x] Page de création de compte
 - [x] Page de connexion
 - [x] Page d'info de l'utilisateur
 - [x] Déconnexion
 - [x] Page de création de quiz
-- [ ] Page de réponse à un quiz
+- [x] Page de réponse à un quiz
 - [ ] Modification d'un quiz
 - [x] Suppression d'un quiz
 - [x] Affichage de la liste des quiz

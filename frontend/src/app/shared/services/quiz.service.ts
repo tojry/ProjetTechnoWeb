@@ -20,6 +20,13 @@ export class QuizService {
       defaultIfEmpty([])
     );
   }
+
+  fetchOne(id: string): Observable<Quiz> {
+
+    return this._http.get<Quiz>(
+      this._backend.routes.oneQuiz.replace(':id', id)
+    );
+  }
   
   add(quiz: Quiz): Observable<any> {
 

@@ -14,6 +14,7 @@ import { CreateQuizComponent } from './create-quiz/create-quiz.component';
 import { CreateQuestionComponent } from './create-question/create-question.component';
 import { QuizCrudRowComponent } from './quiz-crud-row/quiz-crud-row.component';
 import { QuizCrudComponent } from './quiz-crud/quiz-crud.component';
+import { AnswerQuizComponent } from './answer-quiz/answer-quiz.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { QuizCrudComponent } from './quiz-crud/quiz-crud.component';
     CreateQuizComponent,
     CreateQuestionComponent,
     QuizCrudComponent,
-    QuizCrudRowComponent
+    QuizCrudRowComponent,
+    AnswerQuizComponent
   ],
   imports: [
     BrowserModule,
