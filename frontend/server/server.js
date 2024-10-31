@@ -79,6 +79,12 @@ server.get('/quiz/:id', (req, res) => {
   }
 })
 
+server.get('/quiz/category/:category', (req, res) => {
+
+  res.status(200).send(quizData.quiz.filter(q => removeAccents(q.category) === req.params.category));
+  
+})
+
 server.delete('/quiz/:id', (req, res) => {
   
   const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;
@@ -104,3 +110,5 @@ https
       'Go to https://localhost:3000/'
     );
   });
+
+const removeAccents = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

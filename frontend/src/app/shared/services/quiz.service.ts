@@ -27,6 +27,16 @@ export class QuizService {
       this._backend.routes.oneQuiz.replace(':id', id)
     );
   }
+
+  fetchCategory(category: string): Observable<Quiz[]> {
+
+    return this._http.get<Quiz[]>(
+      this._backend.routes.category.replace(':category', category.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
+    ).pipe(
+      filter((quizList: Quiz[]) => !!quizList),
+      defaultIfEmpty([])
+    );
+  }
   
   add(quiz: Quiz): Observable<any> {
 

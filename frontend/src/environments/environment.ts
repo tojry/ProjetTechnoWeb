@@ -13,6 +13,7 @@ export const environment = {
       login: '/login',
       quiz: '/quiz',
       oneQuiz: '/quiz/:id',
+      category: '/quiz/category/:category',
     },
   },
 };

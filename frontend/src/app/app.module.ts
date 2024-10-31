@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToolbarModule } from 'primeng/toolbar';
+import { MenuModule } from 'primeng/menu';
 import { HomeComponent } from './home/home.component';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
@@ -15,6 +16,7 @@ import { CreateQuestionComponent } from './create-question/create-question.compo
 import { QuizCrudRowComponent } from './quiz-crud-row/quiz-crud-row.component';
 import { QuizCrudComponent } from './quiz-crud/quiz-crud.component';
 import { AnswerQuizComponent } from './answer-quiz/answer-quiz.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -31,9 +33,11 @@ import { AnswerQuizComponent } from './answer-quiz/answer-quiz.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ToolbarModule,
     ReactiveFormsModule,
+    MenuModule,
     HttpClientModule
   ],
   providers: [
