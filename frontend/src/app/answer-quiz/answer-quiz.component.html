@@ -1,0 +1,20 @@
+<div *ngIf="!quiz">
+    <p>Chargement...</p>
+</div>
+
+<div *ngIf="!!quizForm &&!!quiz && currentQuestion < quiz.questions.length">
+    <h2>Question {{ currentQuestion + 1 }} sur {{ quiz.questions.length }}</h2>
+    <p>{{ quiz.questions[currentQuestion].question }}</p>
+
+    <form novaldiate [formGroup]="quizForm">
+        <div *ngFor="let ans of quiz.questions[currentQuestion].answers; let i = index">
+            <button type="button" (click)="submitAnswer(i)">{{ ans }}</button> 
+            
+        </div>
+    </form>
+</div>
+  
+<div *ngIf="!!quiz && currentQuestion >= quiz.questions.length">
+    <h2>Quiz Terminé !</h2>
+    <p>Score : {{ score }} / {{ quiz.questions.length }}</p>
+</div>

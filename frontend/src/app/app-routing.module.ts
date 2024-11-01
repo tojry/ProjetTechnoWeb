@@ -7,6 +7,7 @@ import { AccountGuard } from './shared/guards/account.guard';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { CreateQuizComponent } from './create-quiz/create-quiz.component';
+import { AnswerQuizComponent } from './answer-quiz/answer-quiz.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [AccountGuard] },
   { path: 'user/register', component: CreateUserComponent, canActivate: [AccountGuard] },
   { path: 'user', component: UserInfoComponent, canActivate: [AuthGuard] },
-  { path: 'quiz/new', component: CreateQuizComponent, canActivate: [AuthGuard] }
+  { path: 'quiz/new', component: CreateQuizComponent, canActivate: [AuthGuard] },
+  { path: 'quiz/:id', component: AnswerQuizComponent }
 ];
 
 @NgModule({

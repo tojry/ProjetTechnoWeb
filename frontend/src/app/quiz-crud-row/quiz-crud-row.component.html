@@ -1,8 +1,10 @@
 <span>
 
-    <p>{{ quiz.title }}</p>
+    <p>{{ quiz.category }} | {{ quiz.title }} </p>
+    <p *ngIf="!isCrudMode"> {{ quiz.author }} </p>
     <p>{{ quiz.questions.length }} question(s)</p>
-    <button (click)="update(quiz)">Modifier</button>
-    <button (click)="delete(quiz)">Supprimer</button>
+    <button (click)="answer(quiz)">Répondre</button>
+    <button *ngIf="isCrudMode" (click)="update(quiz)">Modifier</button>
+    <button *ngIf="isCrudMode" (click)="delete(quiz)">Supprimer</button>
 
 </span>

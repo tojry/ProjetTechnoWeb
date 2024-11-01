@@ -23,7 +23,7 @@ server.get('/quiz', (req, res) => {
 server.get('/user', (req, res) => {
 
     if(loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", "")) === undefined){
-      res.status(401).send(req.headers.authorization);
+      res.status(401).send();
     }else{
       const userId = usersData.users.find(
         user => (user.id === loginData.users.find(
@@ -70,6 +70,33 @@ server.post('/quiz', (req, res) => {
   res.status(200).send();
 });
 
+server.get('/quiz/:id', (req, res) => {
+
+  if(quizData.quiz.find(q => q.id.toString() === req.params.id) === undefined){
+    res.status(404).send();
+  }else{
+    res.status(200).send(quizData.quiz.find(q => q.id.toString() === req.params.id));
+  }
+})
+
+server.get('/quiz/category/:category', (req, res) => {
+
+  res.status(200).send(quizData.quiz.filter(q => removeAccents(q.category) === req.params.category));
+  
+})
+
+server.delete('/quiz/:id', (req, res) => {
+  
+  const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;
+
+  if(bearerId === undefined || bearerId !== quizData.quiz.find(q => q.id.toString() === req.params.id).author){
+    res.status(401).send();
+  }else{
+    quizData.quiz = quizData.quiz.filter(q => q.id.toString() !== req.params.id);
+    res.status(200).send();
+  }  
+});
+
 https
   .createServer(
     {
@@ -83,3 +110,5 @@ https
       'Go to https://localhost:3000/'
     );
   });
+
+const removeAccents = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');

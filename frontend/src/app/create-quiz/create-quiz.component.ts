@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray, AbstractControl } from '@angular/forms';
-import { Quiz } from '../shared/interfaces/quiz.interface';
+import { Category, Quiz } from '../shared/interfaces/quiz.interface';
 import { AuthService } from '../shared/services/auth.service';
 import { QuizService } from '../shared/services/quiz.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class CreateQuizComponent {
 
   private readonly _createQuizForm : FormGroup;
+  private readonly _categories: Category[] = Object.values(Category);
 
   private _errorMessage : string;
 
@@ -33,6 +34,10 @@ export class CreateQuizComponent {
     return this._createQuizForm;
   }
 
+  get categories(): Category[] {
+    return Object.values(this._categories);
+  }
+
   get questions() : FormArray {
     return this._createQuizForm.get('questions') as FormArray;
   }
@@ -42,6 +47,7 @@ export class CreateQuizComponent {
   }
 
   create(quiz: Quiz) {
+    console.log(quiz);
     const q : Quiz = { 
       ...quiz, 
       author: this._authService.username! 
@@ -77,6 +83,7 @@ export class CreateQuizComponent {
   private _buildForm(): FormGroup {
     return new FormGroup({
       title: new FormControl('', Validators.required),
+      category: new FormControl(Category[0]),
       questions: new FormArray([] as FormGroup[]),
     });
   }

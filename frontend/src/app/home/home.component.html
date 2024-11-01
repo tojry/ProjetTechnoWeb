@@ -1,1 +1,7 @@
-<p>home works!</p>
+<p-menu [model]="categories">
+
+</p-menu>
+
+<h2>{{ categoryName }}</h2>
+<p *ngIf="!quizList.length">Aucun quiz</p>
+<app-quiz-crud [quizList]="quizList" [isCrudMode]="false"></app-quiz-crud>
