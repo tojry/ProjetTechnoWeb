@@ -4,7 +4,7 @@ import {CreateAndPutQuizzDto} from "./dto/createQuizz-dto";
 import {Observable} from "rxjs";
 import {Quizz, QuizzDocument} from "./schema/quizz.schema";
 
-@Controller('quizz')
+@Controller('quiz')
 export class QuizzController {
     /**
      * Handler to answer to /quizz route

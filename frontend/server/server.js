@@ -85,6 +85,16 @@ server.get('/quiz/category/:category', (req, res) => {
   
 })
 
+server.put('/quiz/:id', (req, res) => {
+
+  if(quizData.quiz.find(q => q.id.toString() === req.params.id) === undefined){
+    res.status(404).send();
+  }else{
+    quizData.quiz = quizData.quiz.map(q => q.id.toString() === req.params.id ? req.body : q);
+    res.status(200).send();
+  }
+});
+
 server.delete('/quiz/:id', (req, res) => {
   
   const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;

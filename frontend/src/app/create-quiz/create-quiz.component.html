@@ -15,6 +15,7 @@
       <span>Ce champ est obligatoire</span>
     </div>
 
+    <label>Catégorie</label>
     <select formControlName="category">
       <option *ngFor="let cat of categories">
         {{ cat }}
@@ -27,6 +28,7 @@
 
     <button type="button" (click)="addQuestion()">Ajouter une question</button>
     <button type="submit" (click)="create(createQuizForm.value)" [disabled]="createQuizForm.invalid">Soumettre le quiz</button>
+    <button type="button" [routerLink]="['/user']">Annuler</button>
     <div *ngIf="!!errorMessage">
         <span>{{ errorMessage }}</span>
     </div>

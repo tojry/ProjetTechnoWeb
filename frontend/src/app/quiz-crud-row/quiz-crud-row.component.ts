@@ -47,7 +47,7 @@ export class QuizCrudRowComponent {
   }
 
   update(quiz : Quiz) { 
-    console.log('Update quiz');
+    this._router.navigate(['/quiz/edit/', quiz.id]);
   }
 
   delete(quiz : Quiz) { 

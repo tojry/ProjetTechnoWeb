@@ -47,6 +47,15 @@ export class QuizService {
     );
   }
 
+  update(quiz: Quiz): Observable<any> {
+    
+    return this._http.put<Quiz>(
+      this._backend.routes.oneQuiz.replace(':id', quiz.id!.toString()),
+      quiz,
+      this._options()
+    );
+  }
+
   delete(quiz: Quiz): Observable<any> {
     
     return this._http.delete<Quiz>(

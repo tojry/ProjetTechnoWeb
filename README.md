@@ -37,6 +37,11 @@
   Réponse: { quiz: Quiz[] }
   (Retourner juste une liste vide si aucun quiz n'existe dans cette catégorie)
 
+- PUT   /quiz/:id
+  Body: Quiz = { id: string, author: string, title: string, category: string, questions: Question[] } 
+  avec Question = { question: string, answers: string[], correctAnswer: number }
+  Erreur: 404 si aucun quiz ne correspond à l'id
+
 ```
 - [x] Page de création de compte
 - [x] Page de connexion
@@ -44,7 +49,7 @@
 - [x] Déconnexion
 - [x] Page de création de quiz
 - [x] Page de réponse à un quiz
-- [ ] Modification d'un quiz
+- [x] Modification d'un quiz
 - [x] Suppression d'un quiz
 - [x] Affichage de la liste des quiz
 - [x] Affichage de le liste des quiz d'une catégorie
