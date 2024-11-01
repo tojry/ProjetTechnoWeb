@@ -54,7 +54,7 @@ export class CreateUserComponent {
         );
       },
       error: (err: HttpErrorResponse) => {
-        if(err.status == 403){
+        if(err.status == 409){
           this._errorMessage = "Nom d'utilisateur déjà utilisé";
         }else{
           this._errorMessage = "Une erreur est survenue";

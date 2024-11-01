@@ -10,6 +10,7 @@ import { AppConfig, SwaggerConfig } from './app.types';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
 import { QuizzModule } from './quiz/quizz.module';
+import { UserModule } from './user/user.module';
 
 async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
 
@@ -35,7 +36,7 @@ const options = new DocumentBuilder()
 
 // create swagger document
 const quizDocument = SwaggerModule.createDocument(app, options, {
-  include: [QuizzModule],
+  include: [QuizzModule, UserModule],
 });
 
 // setup swagger module

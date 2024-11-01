@@ -6,7 +6,7 @@
 ```
 - POST    /user
   Body: { id: string, password: string }
-  Erreur: 403 si le nom d'utilisateur existe déjà
+  Erreur: 409 si le nom d'utilisateur existe déjà
 
 - GET     /user       (Token avec l'id de l'utilisateur dans le header de la requête)
   Réponse: { id: string, createdQuizs: Quiz[] } (avec createdQuizs la liste des quiz dont l'author est égal à l'id)
@@ -22,7 +22,8 @@
   (l'id du quiz doit être généré par le back)
 
 - DELETE /quiz/:id
-  Erreur: 401 si l'id associé au token dans le header est différent de l'id de l'auteur du quiz
+  Erreurs: 401 si l'id associé au token dans le header est différent de l'id de l'auteur du quiz
+           404 si l'id du quiz n'existe pas
 
 - GET   /quiz
   Réponse: { quiz: Quiz[] } (liste de tous les quizs)
@@ -38,9 +39,10 @@
   (Retourner juste une liste vide si aucun quiz n'existe dans cette catégorie)
 
 - PUT   /quiz/:id
-  Body: Quiz = { id: string, author: string, title: string, category: string, questions: Question[] } 
+  Body: Quiz = { author: string, title: string, category: string, questions: Question[] } 
   avec Question = { question: string, answers: string[], correctAnswer: number }
-  Erreur: 404 si aucun quiz ne correspond à l'id
+  Erreurs: 401 si si l'id associé au token dans le header est différent de l'id de l'auteur du quiz
+           404 si aucun quiz ne correspond à l'id
 
 ```
 - [x] Page de création de compte

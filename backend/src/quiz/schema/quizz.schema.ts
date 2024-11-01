@@ -25,7 +25,14 @@ export class Quizz {
         required: true,
         trim: true,
     })
-    nom: string;
+    author: string;
+
+    @Prop({
+        type: String,
+        required: true,
+        trim: true,
+    })
+    title: string;
 
     @Prop({
         type: String,
@@ -33,7 +40,7 @@ export class Quizz {
         minlength: 2,
         trim: true,
     })
-    categorie: string;
+    category: string;
 
     @Prop({
         type: [mongoose.Schema.Types.ObjectId],

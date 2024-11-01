@@ -43,7 +43,7 @@ server.get('/user', (req, res) => {
 server.post('/user', (req, res) => {
 
   if(usersData.users.find(user => user.id === req.body.id) !== undefined){
-    res.status(403).send();
+    res.status(409).send();
   }else{
     usersData.users.push(req.body);
     loginData.users.push({id: req.body.id, token: 'token_' + req.body.id});
@@ -51,7 +51,7 @@ server.post('/user', (req, res) => {
   }
 });
 
-server.post('/login', (req, res) => {
+server.post('/user/login', (req, res) => {
 
   if(usersData.users.find(user => user.id === req.body.id) === undefined || usersData.users.find(user => user.id === req.body.id).password !== req.body.password){
     res.status(401).send();
@@ -87,8 +87,12 @@ server.get('/quiz/category/:category', (req, res) => {
 
 server.put('/quiz/:id', (req, res) => {
 
+  const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;
+
   if(quizData.quiz.find(q => q.id.toString() === req.params.id) === undefined){
     res.status(404).send();
+  }else if(bearerId === undefined || bearerId !== quizData.quiz.find(q => q.id.toString() === req.params.id).author){
+    res.status(401).send();
   }else{
     quizData.quiz = quizData.quiz.map(q => q.id.toString() === req.params.id ? req.body : q);
     res.status(200).send();

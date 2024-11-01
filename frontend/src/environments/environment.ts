@@ -10,7 +10,7 @@ export const environment = {
     port: '3000',
     endpoints: {
       user: '/user',
-      login: '/login',
+      login: '/user/login',
       quiz: '/quiz',
       oneQuiz: '/quiz/:id',
       category: '/quiz/category/:category',

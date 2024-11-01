@@ -87,7 +87,13 @@ export class CreateQuizComponent {
     if(this._isUpdateMode){
       this._quizService.update(q).subscribe({
         next: () => this._router.navigate(['/user']),
-        error: () => this._errorMessage = "Une erreur est survenue"
+        error: (err: HttpErrorResponse) => {
+          if(err.status == 401){
+            this._router.navigate(['/login']);
+          }else{
+            this._errorMessage = "Une erreur est survenue"
+          }
+        }
       });
     } else{
       this._quizService.add(q).subscribe({

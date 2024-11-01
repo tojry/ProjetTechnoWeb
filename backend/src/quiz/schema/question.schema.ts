@@ -26,7 +26,7 @@ export class Question {
         required: true,
         trim: true,
     })
-    intitule: string;
+    question: string;
 
     @Prop({
         type: [
@@ -41,7 +41,7 @@ export class Question {
         ],
         required: true,
     })
-    reponses: {
+    answers: {
         texte: string;
         correct: boolean;
     }[];
