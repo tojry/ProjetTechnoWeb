@@ -5,3 +5,11 @@ server:
     - "https://0.0.0.0:4200"
     - "https://127.0.0.1:4200"
     - "https://localhost:4200"
+swagger:
+  title: The Quiz API
+  description: Projet de technologies web
+  version: 1.0
+  tag: quiz
+  path: documentation
+mongodb:
+  uri: mongodb+srv://matthieugalante:hzMKl4e8jb5VvWIK@cluster0.fdds4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

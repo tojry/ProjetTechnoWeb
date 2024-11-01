@@ -6,10 +6,12 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import * as Config from 'config';
-import { AppConfig } from './app.types';
+import { AppConfig, SwaggerConfig } from './app.types';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
+import { QuizzModule } from './quiz/quizz.module';
 
-async function bootstrap(config: AppConfig) {
+async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
 
   const httpsOptions = {
     key: fs.readFileSync('ssl/key.pem'),
@@ -20,7 +22,26 @@ async function bootstrap(config: AppConfig) {
     AppModule,
     new FastifyAdapter({ logger: true, https: httpsOptions }),
   );
+
   app.enableCors({ origin: config.cors });
+
+// create swagger options
+const options = new DocumentBuilder()
+  .setTitle(swaggerConfig.title)
+  .setDescription(swaggerConfig.description)
+  .setVersion(swaggerConfig.version)
+  .addTag(swaggerConfig.tag)
+  .build(); 
+
+// create swagger document
+const quizDocument = SwaggerModule.createDocument(app, options, {
+  include: [QuizzModule],
+});
+
+// setup swagger module
+SwaggerModule.setup(swaggerConfig.path, app, quizDocument);
+
+
   await app.listen(config.port, config.host);
   Logger.log(
     `Application served at https://${config.host}:${config.port}`,
@@ -28,4 +49,7 @@ async function bootstrap(config: AppConfig) {
   );
 }
 
-bootstrap(Config.get<AppConfig>('server'));
+bootstrap(
+  Config.get<AppConfig>('server'),
+  Config.get<SwaggerConfig>('swagger'),
+);

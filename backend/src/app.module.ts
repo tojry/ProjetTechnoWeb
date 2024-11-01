@@ -4,11 +4,12 @@ import { AppService } from './app.service';
 import {UserModule} from "./user/user.module";
 import {QuizzModule} from "./quiz/quizz.module";
 import { MongooseModule } from '@nestjs/mongoose';
+import * as Config from 'config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://matthieugalante:hzMKl4e8jb5VvWIK@cluster0.fdds4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-      serverApi: { version: '1', strict: true, deprecationErrors: true }
+      MongooseModule.forRoot(Config.get<string>('mongodb.uri'), {
+    serverApi: { version: '1', strict: true, deprecationErrors: true }
     }),
       UserModule, QuizzModule],
   controllers: [AppController],
