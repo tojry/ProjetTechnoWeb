@@ -4,12 +4,17 @@ import { ApiCreatedResponse, ApiBody, ApiConflictResponse, ApiUnauthorizedRespon
 import { UserEntity } from './entities/user.entity';
 import { Observable } from 'rxjs';
 import { JWTTokenEntity } from './entities/jwt-token.entity';
+import {QuizzService} from "../quiz/quizz.service";
+import {UserService} from "./user.service";
+import {QuizzDocument} from "../quiz/schema/quizz.schema";
+import {UserDocument} from "./schema/user.schema";
 
 @Controller('user')
 export class UserController {
     /**
      * Handler to answer to /user route
      */
+    constructor(private readonly _userService: UserService) {}
 
     @ApiCreatedResponse({
         description: 'The user has been successfully created.'
@@ -22,8 +27,8 @@ export class UserController {
         type: CreateAndPutUserDto,
       })
     @Post()
-    createUser(@Body() createUserDto : CreateAndPutUserDto): string {
-        return "TODO";
+    createUser(@Body() createUserDto : CreateAndPutUserDto): Observable<UserDocument> {
+        return this._userService.createUser(createUserDto);
     }
 
     @ApiOkResponse({
