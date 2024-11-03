@@ -23,4 +23,9 @@ export class UserService {
     async getAllQuizz(): Promise<User[]> {
         return this.userModel.find().exec(); // Récupère tous les quiz de la collection
     }
+
+    async findOne(id_tmp: string): Promise<User | undefined> {
+        const user = await this.userModel.findOne({ id: id_tmp }).exec();
+        return user ?? undefined; // Retourne undefined si aucun document trouvé
+    }
 }

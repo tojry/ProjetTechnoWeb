@@ -1,20 +1,21 @@
-import {Body, Controller, Delete, Get, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards} from '@nestjs/common';
 import {CreateAndPutUserDto} from "./dto/createAndPut-user.dto";
 import { ApiCreatedResponse, ApiBody, ApiConflictResponse, ApiUnauthorizedResponse, ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { Observable } from 'rxjs';
 import { JWTTokenEntity } from './entities/jwt-token.entity';
-import {QuizzService} from "../quiz/quizz.service";
 import {UserService} from "./user.service";
-import {QuizzDocument} from "../quiz/schema/quizz.schema";
-import {UserDocument} from "./schema/user.schema";
+import {User, UserDocument} from "./schema/user.schema";
+import {LocalAuthGuard} from "../auth/local-auth.guard";
+import {AuthService} from "../auth/auth.service";
+
 
 @Controller('user')
 export class UserController {
     /**
      * Handler to answer to /user route
      */
-    constructor(private readonly _userService: UserService) {}
+    constructor(private readonly _userService: UserService, private readonly authService: AuthService) {}
 
     @ApiCreatedResponse({
         description: 'The user has been successfully created.'
@@ -39,9 +40,9 @@ export class UserController {
         description: 'The token in the request header is invalid.'
     })
     @ApiBearerAuth()
-    @Get()
-    getUser(): string {
-        return 'user';
+    @Get(':id')
+    getUser(@Param('id') id: string): Promise<User | undefined> {
+        return this._userService.findOne(id);
     }
    
     @ApiOkResponse({
@@ -56,8 +57,14 @@ export class UserController {
         type: CreateAndPutUserDto,
     })
     @Post('login')
-    loginUser(): string {
-        return "TODO";
+    login(@Body() loginDto : CreateAndPutUserDto): Promise<{ token: string }> {
+        return this.authService.login(loginDto);
+    }
+
+    @UseGuards(LocalAuthGuard)
+    @Post('logout')
+    async logout(@Request() req) {
+        return req.logout();
     }
 
 
