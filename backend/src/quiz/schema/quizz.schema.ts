@@ -12,13 +12,14 @@ export type QuizzDocument = Quizz & Document;
         },
     },
     versionKey: false,
+    autoIndex : true
 })
 export class Quizz {
-    @Prop({
-        type: mongoose.Schema.Types.ObjectId,
+    /**@Prop({
+        type: mongoose.Schema.Types.Number,
         auto: true,
     })
-    _id: any;
+    id: any;**/
 
     @Prop({
         type: String,
@@ -53,4 +54,4 @@ export class Quizz {
 
 export const QuizzSchema = SchemaFactory.createForClass(Quizz);
 
-QuizzSchema.index({ nom: 1}, { unique: true });
+QuizzSchema.index({ category: 1}, { unique: true });

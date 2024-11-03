@@ -8,6 +8,8 @@ import {UserService} from "./user.service";
 import {User, UserDocument} from "./schema/user.schema";
 import {LocalAuthGuard} from "../auth/local-auth.guard";
 import {AuthService} from "../auth/auth.service";
+import {Quizz} from "../quiz/schema/quizz.schema";
+import {CreateAndPutQuizzDto} from "../quiz/dto/createQuizz-dto";
 
 
 @Controller('user')
@@ -61,11 +63,16 @@ export class UserController {
         return this.authService.login(loginDto);
     }
 
-    @UseGuards(LocalAuthGuard)
-    @Post('logout')
-    async logout(@Request() req) {
-        return req.logout();
+    @ApiBearerAuth()
+    @Delete(':id')
+    deleteUserById(@Param('id') id: string): Promise<User | null> {
+        return this._userService.delete(id);
     }
 
+    @ApiBearerAuth()
+    @Put(':id')
+    updateUserById(@Param('id') id: string, @Body() createAndPutUserDto: CreateAndPutUserDto): Promise<User | undefined> {
+        return this._userService.modify(id, createAndPutUserDto);
+    }
 
 }

@@ -6,7 +6,7 @@ import {Quizz, QuizzDocument} from "./schema/quizz.schema";
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { QuizzEntity } from './entities/quizz.entity';
 
-@Controller('quiz')
+@Controller('quizz')
 export class QuizzController {
     /**
      * Handler to answer to /quizz route
@@ -40,8 +40,8 @@ export class QuizzController {
         allowEmptyValue: false
       })
     @Get(':id')
-    getQuizzById(@Param('id') id: string): string {
-        return 'quizz';
+    getQuizzById(@Param('id') id: string): Promise<Quizz | undefined> {
+        return this._quizzService.findOne(id);
     }
 
     @ApiOkResponse({
@@ -65,8 +65,8 @@ export class QuizzController {
     })
     @ApiBearerAuth()
     @Put(':id')
-    updateQuizzById(@Param('id') id: string): string {
-        return 'TODO';
+    updateQuizzById(@Param('id') id: string, @Body() createAndPutQuizzDto: CreateAndPutQuizzDto): Promise<Quizz | undefined> {
+        return this._quizzService.modify(id, createAndPutQuizzDto);
     }
 
     @ApiNoContentResponse({
@@ -86,8 +86,8 @@ export class QuizzController {
     })
     @ApiBearerAuth()
     @Delete(':id')
-    deleteQuizzById(@Param('id') id: string): string {
-        return 'TODO';
+    deleteQuizzById(@Param('id') id: string): Promise<Quizz | null> {
+        return this._quizzService.delete(id);
     }
 
     /*
@@ -118,8 +118,8 @@ export class QuizzController {
         allowEmptyValue: false
     })
     @Get('category/:category')
-    getQuizzByCategory(@Param('category') categorie: string): string {
-        return 'TODO';
+    getQuizzByCategory(@Param('category') categorie: string): Promise<Quizz[]> {
+        return this._quizzService.findByCategory(categorie);
     }
 
     /**
