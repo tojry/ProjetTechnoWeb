@@ -1,5 +1,17 @@
-<p> {{ user.id }}</p>
+<div class="card px-6 py-6">
 
-<button [routerLink]="['/quiz/new']">Créer un quiz</button>
+    <span class="flex" style="align-items: center">
+        <div style="margin-right: 1rem" class="text-3xl font-bold mb-3">Mes quiz</div>
+    </span>
 
-<app-quiz-crud [quizList]="user.createdQuizs" [isCrudMode]="true"></app-quiz-crud>
+    <p-toolbar styleclass="mb-4">
+        <div class="p-toolbar-group-left p-toolbar-group-start">
+        <button class="p-element p-button-success p-ripple p-button p-component" [routerLink]="['/quiz/new']">
+            <span class="p-button-icon p-button-icon-left pi pi-pen-to-square"></span>
+            <span class="p-button-label">Créer un quiz</span>
+        </button>
+        </div>
+    </p-toolbar>
+
+    <app-quiz-crud [quizList]="user.createdQuizs" [isCrudMode]="true"></app-quiz-crud>
+</div>

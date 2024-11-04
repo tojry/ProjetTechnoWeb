@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Quiz } from '../shared/interfaces/quiz.interface';
+import { Category, Quiz } from '../shared/interfaces/quiz.interface';
 import { QuizService } from '../shared/services/quiz.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, merge, mergeMap } from 'rxjs';
@@ -17,6 +17,7 @@ export class AnswerQuizComponent {
   private _currentQuestion : number = 0;
   private _answers : number[] = [];
   private _score : number = 0;
+  private readonly _categories: Category[] = Object.values(Category);
 
   constructor(private _quizService : QuizService, private _router: Router, private _route: ActivatedRoute) {
 
@@ -50,6 +51,10 @@ export class AnswerQuizComponent {
     return this._score;
   }
 
+  getCategoryColor(categoryId: number): string {
+    return `var(${this._categories[categoryId].color})`;
+  }
+
   submitAnswer(answer: number): void {
 
     if(!this._quiz) {
@@ -64,6 +69,14 @@ export class AnswerQuizComponent {
     } else {
       this._finishQuiz();
     }
+  }
+
+  tryAgain(): void {
+
+    this._quizForm = this._buildQuestionForm();
+    this._currentQuestion = 0;
+    this._answers = [];
+    this._score = 0;
   }
 
   private _buildQuestionForm(): FormGroup {

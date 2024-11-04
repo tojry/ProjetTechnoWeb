@@ -37,8 +37,8 @@ export class CreateQuizComponent {
     return this._createQuizForm;
   }
 
-  get categories(): Category[] {
-    return Object.values(this._categories);
+  get categories(): string[] {
+    return this._categories.map(cat => cat.name);
   }
 
   get questions() : FormArray {
@@ -47,6 +47,10 @@ export class CreateQuizComponent {
   
   get errorMessage(): string {
     return this._errorMessage;
+  }
+
+  get isUpdateMode(): boolean {
+    return this._isUpdateMode;
   }
 
   ngOnInit(): void {
@@ -80,6 +84,7 @@ export class CreateQuizComponent {
 
     const q : Quiz = { 
       ...quiz, 
+      category: this._getCategoryIdByName(quiz.category.toString()) || 0,
       author: this._isUpdateMode ? this._quizData.author : this._authService.username!,
       id: this._isUpdateMode ? this._quizData.id : undefined
     };
@@ -107,7 +112,7 @@ export class CreateQuizComponent {
   populateFormWithQuizData(quiz: Quiz) {
     this.createQuizForm.patchValue({
       title: quiz.title,
-      category: quiz.category
+      category: this.categories[quiz.category]
     });
 
     quiz.questions.forEach((question: Question) => {
@@ -116,6 +121,7 @@ export class CreateQuizComponent {
   }
 
   addQuestion(questionData?: Question) {
+
     const questionForm = new FormGroup({
       question: new FormControl(questionData ? questionData.question : '', Validators.required),
       answers: new FormArray(questionData
@@ -126,8 +132,9 @@ export class CreateQuizComponent {
           new FormControl('', Validators.required),
           new FormControl('', Validators.required)
         ]),
-      correctAnswer: new FormControl(questionData ? questionData.correctAnswer : null, Validators.required)
+      correctAnswer: new FormControl(questionData ? Number(questionData.correctAnswer) : undefined, Validators.required)
     });
+
     this.questions.push(questionForm);
   }
 
@@ -142,8 +149,17 @@ export class CreateQuizComponent {
   private _buildForm(): FormGroup {
     return new FormGroup({
       title: new FormControl('', Validators.required),
-      category: new FormControl(Category[0]),
+      category: new FormControl(Category[0].name),
       questions: new FormArray([] as FormGroup[]),
     });
+  }
+
+  private _getCategoryIdByName(name: string): number | undefined {
+    for (const [key, value] of Object.entries(Category)) {
+        if (value.name === name) {
+            return Number(key);
+        }
+    }
+    return undefined;
   }
 }

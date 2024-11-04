@@ -1,37 +1,65 @@
 <form novalidate [formGroup]="createQuizForm">
 
-    <label>Titre</label>
-    <input
-      type="text"
-      placeholder="Titre du quiz"
-      formControlName="title"
-    />
-    <div
-      *ngIf="
-        createQuizForm.get('title')?.dirty &&
-        createQuizForm.get('title')?.hasError('required')
-      "
-    >
-      <span>Ce champ est obligatoire</span>
-    </div>
+  <div class="card px-6 py-6">
+    <div *ngIf= "!isUpdateMode" class="text-3xl font-bold mb-3">Nouveau Quiz</div>
+    <div *ngIf= "isUpdateMode" class="text-3xl font-bold mb-3">Modifier le quiz</div>
 
-    <label>Catégorie</label>
-    <select formControlName="category">
-      <option *ngFor="let cat of categories">
-        {{ cat }}
-      </option>
-    </select>
+      <p-toolbar styleclass="mb-4">
+        <div class="p-toolbar-group-left p-toolbar-group-start">
+          <button class="p-element p-ripple p-button p-component" (click)="addQuestion()">
+            <span class="p-button-icon p-button-icon-left pi pi-plus-circle"></span>
+            <span class="p-button-label">Ajouter une question</span>
+          </button>
+        </div>
 
-    <div formArrayName="questions">
-        <app-create-question [questionIndex] ="i+1" [questionForm]="getQuestionFormGroup(question)" (deleteQuestion)="deleteQuestion($event)" *ngFor="let question of questions.controls; let i = index" ></app-create-question>
-    </div>
-
-    <button type="button" (click)="addQuestion()">Ajouter une question</button>
-    <button type="submit" (click)="create(createQuizForm.value)" [disabled]="createQuizForm.invalid">Soumettre le quiz</button>
-    <button type="button" [routerLink]="['/user']">Annuler</button>
-    <div *ngIf="!!errorMessage">
-        <span>{{ errorMessage }}</span>
-    </div>
+        <div class="p-toolbar-group-right p-toolbar-group-end">
+          <div style="margin-right: .5rem">
+            <span class="p-input-icon-left">
+              <i class="pi pi-pencil"></i>
+              <input type="text" placeholder="Titre du quiz" formControlName="title" class="p-inputtext w-full"/>
+              
+            </span>
+            <div *ngIf="createQuizForm.get('title')?.dirty && createQuizForm.get('title')?.hasError('required')">
+              <small class="p-error">Ce champ est obligatoire</small>
+            </div>
+          </div>
+          
+          <div style="margin-right: .5rem">
+            <p-dropdown [options]="categories" formControlName="category" placeholder="Choisir une catégorie">
     
-  </form>
+            </p-dropdown>
+          </div>
+
+          <div>
+            <button class="p-element p-ripple p-button-success p-button p-component" style="margin-right: .5rem" type="submit" (click)="create(createQuizForm.value)" [disabled]="createQuizForm.invalid">
+              <span class="p-button-icon p-button-icon-left pi pi-pen-to-square"></span>
+              <span class="p-button-label">Publier</span>
+            </button>
+            <div *ngIf="!!errorMessage">
+              <small class="p-error">{{ errorMessage }}</small>
+            </div>
+          </div>
+          <button class="p-element p-ripple p-button-danger p-button p-component" type="button" [routerLink]="['/user']">
+            <span class="p-button-icon p-button-icon-left pi pi-times-circle"></span>
+            <span class="p-button-label">Annuler</span>
+          </button>
+        </div>
+      </p-toolbar>
+
+      <div formArrayName="questions">
+        <p-table [value]="questions.controls" class="p-table">
+          <ng-template pTemplate="body" let-question let-i="rowIndex">
+            <tr>
+              <td colspan="7">
+                <app-create-question [questionIndex] ="i+1" [questionForm]="getQuestionFormGroup(question)" (deleteQuestion)="deleteQuestion($event)"></app-create-question>
+              </td>
+            </tr>
+          </ng-template>
+        
+        </p-table>
+
+      </div>
+    
+  </div>
+</form>
   

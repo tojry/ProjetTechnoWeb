@@ -4,7 +4,7 @@
         "id": 0,
         "author": "UserTest1",
         "title": "Test Quiz 1",
-        "category": "Géographie",
+        "category": 1,
         "questions": [
           {
             "question": "Question 1",
@@ -39,7 +39,7 @@
         "id": 1,
         "author": "UserTest2",
         "title": "Quiz 2",
-        "category": "Sciences",
+        "category": 5,
         "questions": [
           {
             "question": "La 1ère question",
@@ -65,7 +65,7 @@
         "id": 2,
         "author": "UserTest1",
         "title": "Test Quiz 2",
-        "category": "Sport",
+        "category": 4,
         "questions": [
           {
             "question": "Question 1",

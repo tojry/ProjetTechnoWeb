@@ -81,7 +81,7 @@ server.get('/quiz/:id', (req, res) => {
 
 server.get('/quiz/category/:category', (req, res) => {
 
-  res.status(200).send(quizData.quiz.filter(q => removeAccents(q.category) === req.params.category));
+  res.status(200).send(quizData.quiz.filter(q => q.category.toString() === req.params.category));
   
 })
 

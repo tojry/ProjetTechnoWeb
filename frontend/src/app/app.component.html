@@ -1,26 +1,69 @@
-<p-toolbar> 
-    
-    <span>
-        <a [routerLink]="['/']">Home</a>
-      </span>
+<div class="layout-container layout-primary">
+    <div class="layout-topbar"> 
+        <a class="app-logo" [routerLink]="['/']">
+            <img alt="app logo" src="logo.png">
+        </a>
+        <span class="app-title">EasyQuizy</span>
 
-    <span *ngIf="!isLoggedIn">
-        <a [routerLink]="['/login']">Se connecter</a>
-    </span>
+        <ul class="topbar-menu">
+            <li class = "topbar-menu-empty">Création et partage de quiz</li>
+        </ul>
 
-    <span *ngIf="!isLoggedIn">
-        <a [routerLink]="['/user/register']">Créer un compte</a>
-    </span>
+        <ul *ngIf="!isLoggedIn" class="topbar-menu-right">
+            <li>
+                <button class="topbar-button" [routerLink]="['/login']">
+                    <i class="pi pi-sign-in"></i>&nbsp;&nbsp;Se connecter
+                </button>
+            </li>
+            <li>
+                <button class="topbar-button" [routerLink]="['/user/register']">
+                    <i class="pi pi-pencil"></i>&nbsp;&nbsp;Créer un compte
+                </button>
+            </li>
+        </ul>
 
-    <span *ngIf="isLoggedIn">
-        <button [routerLink]="['/quiz/new']">Créer un quiz</button>
-    </span>
+        <div *ngIf="isLoggedIn" class="topbar-profile">
+            <button (click)="toggleMenu()" class="topbar-profile-button" type="button">
+                <span class="profile-details">
+                    <span class="profile-name">{{ username }}</span>
+                </span>
+                <i class="pi pi-angle-down"></i>
+            </button>
+            <ul *ngIf="isMenuOpen" class="profile-menu">
+                <li>
+                    <a (click)="toggleMenu()" [routerLink]="['/user']" class="profile-menu-button hover:surface-hover">
+                        <i class="pi pi-user"></i>
+                        <span>Mes quiz</span>
+                    </a>
+                    <a (click)="toggleMenu(); logout()" class="profile-menu-button hover:surface-hover">
+                        <i class="pi pi-power-off"></i>
+                        <span>Se déconnecter</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-    <span *ngIf="isLoggedIn">
-        <p>Bienvenue {{ username }}</p>
-        <button [routerLink]="['/user']">Mon compte</button>
-        <button (click)="logout()">Se déconnecter</button>
-    </span>
-    
-</p-toolbar>
-<router-outlet></router-outlet>
+    </div>
+    <div class="layout-sidebar">
+        <div class="layout-menu-container">
+            <ul class="layout-menu">
+                <li class="layout-root-menuitem">
+                    <a pTooltip="Accueil" [routerLink]="['/home']">
+                        <i class="layout-menuitem-icon pi pi-home"></i>
+                    </a>  
+                </li>
+                <li *ngIf="isLoggedIn" class="layout-root-menuitem">
+                    <a pTooltip="Créer un quiz" [routerLink]="['/quiz/new']">
+                        <i class="layout-menuitem-icon pi pi-plus-circle"></i>
+                    </a>  
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layout-content-wrapper">
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

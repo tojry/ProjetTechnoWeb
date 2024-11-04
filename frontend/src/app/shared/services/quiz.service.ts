@@ -28,10 +28,10 @@ export class QuizService {
     );
   }
 
-  fetchCategory(category: string): Observable<Quiz[]> {
+  fetchCategory(category: number): Observable<Quiz[]> {
 
     return this._http.get<Quiz[]>(
-      this._backend.routes.category.replace(':category', category.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
+      this._backend.routes.category.replace(':category', category)
     ).pipe(
       filter((quizList: Quiz[]) => !!quizList),
       defaultIfEmpty([])

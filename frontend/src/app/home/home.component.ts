@@ -20,9 +20,9 @@ export class HomeComponent {
 
     this._categoryItems = Object.values(Category).slice(1).map(
       category => ({ 
-        label: category, 
-        command: () => this._quizService.fetchCategory(category).subscribe(
-          (q: any) => { this._quizList = q; this._categoryName = category }
+        label: category.name, 
+        command: () => this._quizService.fetchCategory(this._getCategoryIdByName(category.name)!).subscribe(
+          (q: any) => { this._quizList = q; this._categoryName = category.name }
         ) })
     );
     this._categoryItems.unshift({ label: 'Tous les quiz', command: () => this._quizService.fetchAll().subscribe(
@@ -47,5 +47,14 @@ export class HomeComponent {
 
   get quizList(): Quiz[] {
     return this._quizList;
+  }
+
+  private _getCategoryIdByName(name: string): number | undefined {
+    for (const [key, value] of Object.entries(Category)) {
+        if (value.name === name) {
+            return Number(key);
+        }
+    }
+    return undefined;
   }
 }

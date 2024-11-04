@@ -1,7 +1,18 @@
-<p-menu [model]="categories">
+<div class="card px-6 py-4 p-datatable">
+    <div class="flex justify-content-between align-items-center">
 
-</p-menu>
+    
+        <p-tabMenu [model]="categories">
 
-<h2>{{ categoryName }}</h2>
-<p *ngIf="!quizList.length">Aucun quiz</p>
-<app-quiz-crud [quizList]="quizList" [isCrudMode]="false"></app-quiz-crud>
+        </p-tabMenu>
+        <span class="block mt-2 md:mt-0 p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pinputtext="" type="text" placeholder="Rechercher" class="p-inputtext p-component p-element w-full sm:w-auto">
+        </span>
+    </div>
+
+    <span *ngIf="!quizList.length" class="text-xl font-bold flex justify-content-center mt-3">Aucun quiz</span>
+    <app-quiz-crud *ngIf="quizList.length > 0" [quizList]="quizList" [isCrudMode]="false"></app-quiz-crud>
+    
+</div>
+

@@ -1,70 +1,60 @@
 <form novalidate [formGroup]="registerForm">
-    <input
-      type="text"
-      placeholder="Nom d'utilisateur"
-      formControlName="id"
-    />
-    <div
-      *ngIf="
-        registerForm.get('id')?.dirty &&
-        registerForm.get('id')?.hasError('required')
-      "
-    >
-      <span>Ce champ est obligatoire</span>
+  <div class="flex align-items-center justify-content-center">
+    <div class="surface-card py-7 px-5 sm:px-7 shadow-2 flex flex-column w-11 sm:w-30rem" style="border-radius: 14px">
+      <div class="text-center mb-5">
+        <div class="text-3xl font-bold mb-3">EASYQUIZY</div>
+        <span class="text-color-secondary font-medium line-height-3">Déjà inscrit ?</span>
+        <a [routerLink]="['/login']" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Se connecter</a>
+      </div>
+      <div class="p-fluid">
+        <div class="mb-4">
+          <span class="p-input-icon-left">
+            <i class="pi pi-user"></i>
+            <input id="username" type="text" placeholder="Nom d'utilisateur" formControlName="id" class="p-inputtext w-full"/>
+          </span>
+          <div *ngIf="registerForm.get('id')?.dirty && registerForm.get('id')?.hasError('required')">
+            <small class="p-error">Ce champ est obligatoire</small>
+          </div>
+          <div *ngIf="registerForm.get('id')?.dirty && registerForm.get('id')?.hasError('minlength')">
+            <small class="p-error">3 caractères minimum</small>
+          </div>
+        </div>
+        <div class="mb-4">
+          <span class="p-input-icon-left">
+            <i class="pi pi-key"></i>
+            <input id="password" type="password" placeholder="Mot de passe" formControlName="password" class="p-inputtext w-full"/>
+          </span>
+          <div *ngIf="registerForm.get('password')?.dirty && registerForm.get('password')?.hasError('required')">
+            <small class="p-error">Ce champ est obligatoire</small>
+          </div>
+          <div *ngIf="registerForm.get('password')?.dirty && registerForm.get('password')?.hasError('pattern')">
+            <small class="p-error">Le mot de passe doit contenir au moins 8 caractères dont une lettre, un chiffre et un caractère spécial.</small>
+          </div>
+        </div>
+        <div class="mb-4">
+          <span class="p-input-icon-left">
+            <i class="pi pi-key"></i>
+            <input id="confirmPassword" type="password" placeholder="Confirmer le mot de passe" formControlName="confirmPassword" class="p-inputtext w-full"/>
+          </span>
+          <div *ngIf="registerForm.get('confirmPassword')?.dirty && registerForm.get('confirmPassword')?.hasError('required')">
+            <small class="p-error">Ce champ est obligatoire</small>
+          </div>
+          <div *ngIf="registerForm.get('confirmPassword')?.dirty && registerForm.hasError('passwordMismatch')">
+            <small class="p-error">Les mots de passe ne correspondent pas</small>
+          </div>
+        </div>
+        <p-button
+          label="Créer un compte"
+          icon="pi pi-pencil"
+          type="submit"
+          class="w-full mt-3"
+          (click)="registerUser(registerForm.value)"
+          [disabled]="registerForm.invalid"
+        ></p-button>
+        <div *ngIf="errorMessage" class="mt-2 text-center p-error">
+          <span>{{ errorMessage }}</span>
+        </div>
+      </div>
     </div>
-    <div
-      *ngIf="
-        registerForm.get('id')?.dirty &&
-        registerForm.get('id')?.hasError('minlength')
-      "
-    >
-      <span>3 caractères minimum</span>
-    </div>
-    <input
-      type="password"
-      placeholder="Mot de passe"
-      formControlName="password"
-    />
-    <div
-      *ngIf="
-        registerForm.get('password')?.dirty &&
-        registerForm.get('password')?.hasError('required')
-      "
-    >
-      <span>Ce champ est obligatoire</span>
-    </div>
-    <div
-      *ngIf="
-        registerForm.get('password')?.dirty &&
-        registerForm.get('password')?.hasError('pattern')
-      "
-    >
-      <span>Le mot de passe doit contenir au moins 8 caractères dont une lettre, un chiffre et un caractère spécial.</span>
-    </div>
-    <input
-      type="password"
-      placeholder="Confirmer le mot de passe"
-      formControlName="confirmPassword"
-    />
-    <div
-      *ngIf="
-        registerForm.get('confirmPassword')?.dirty &&
-        registerForm.get('confirmPassword')?.hasError('required')
-      "
-    >
-      <span>Ce champ est obligatoire</span>
-    </div>
-    <div *ngIf="registerForm.get('confirmPassword')?.dirty && registerForm.hasError('passwordMismatch')">
-      <span>Les mots de passe ne correspondent pas</span>
-    </div>
-    <button type="submit" (click)="registerUser(registerForm.value)" [disabled]="registerForm.invalid">
-      Créer un compte
-    </button>
-    <div *ngIf="!!errorMessage">
-        <span>{{ errorMessage }}</span>
-    </div>
-    <div>
-      <span>Déjà inscrit ? <a [routerLink]="['/login']">Se connecter</a></span>
-    </div>
-  </form>
-  
+  </div>
+</form>

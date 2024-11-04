@@ -2,19 +2,37 @@
     <p>Chargement...</p>
 </div>
 
-<div *ngIf="!!quizForm &&!!quiz && currentQuestion < quiz.questions.length">
-    <h2>Question {{ currentQuestion + 1 }} sur {{ quiz.questions.length }}</h2>
-    <p>{{ quiz.questions[currentQuestion].question }}</p>
+<div class="card px-6 py-6 quiz-card">
 
-    <form novaldiate [formGroup]="quizForm">
-        <div *ngFor="let ans of quiz.questions[currentQuestion].answers; let i = index">
-            <button type="button" (click)="submitAnswer(i)">{{ ans }}</button> 
-            
+    <div *ngIf="!!quizForm && !!quiz && currentQuestion < quiz.questions.length">
+        <div class="text-4xl font-bold mb-3">{{ quiz.title }}</div>
+        <div class="question-title">
+            <span class="text-2xl text-color-secondary font-medium line-height-3" >{{ currentQuestion + 1 }} / {{ quiz.questions.length }}</span>
+            <span class="text-2xl font-bold line-height-3">{{ quiz.questions[currentQuestion].question }}</span>
         </div>
-    </form>
-</div>
-  
-<div *ngIf="!!quiz && currentQuestion >= quiz.questions.length">
-    <h2>Quiz Terminé !</h2>
-    <p>Score : {{ score }} / {{ quiz.questions.length }}</p>
+        <form novalidate [formGroup]="quizForm">
+            <div class="quiz-card-answers">
+                <div *ngFor="let ans of quiz.questions[currentQuestion].answers; let i = index">
+                    <button class="p-button w-full" type="button" [ngStyle]="{'border' : 0, 'background-color': getCategoryColor(quiz.category)}" (click)="submitAnswer(i)">
+                        <span class="p-button-label">{{ ans }}</span>
+                    </button> 
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <div *ngIf="!!quiz && currentQuestion >= quiz.questions.length">
+        <div class="text-4xl font-bold mb-3">{{ quiz.title }}</div>
+        <span class="text-2xl font-bold line-height-3">Quiz Terminé !</span>
+        <p>Score : {{ score }} / {{ quiz.questions.length }}</p>
+        <button type="button" class="p-button" (click)="tryAgain()" style="margin-right: .5rem">
+            <span class="p-button-icon p-button-icon-left pi pi-refresh"></span>
+            <span class="p-button-label">Réessayer</span>
+        </button>
+        <button type="button" class="p-button" [routerLink]="['/']">
+            <span class="p-button-icon p-button-icon-left pi pi-home"></span>
+            <span class="p-button-label">Accueil</span>
+        </button>
+    </div>
 </div>
