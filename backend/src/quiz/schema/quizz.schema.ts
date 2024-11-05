@@ -12,7 +12,8 @@ export type QuizzDocument = Quizz & Document;
             delete ret._id;
         },
     },
-    versionKey: false
+    versionKey: false,
+    autoIndex : true
 })
 export class Quizz {
 
@@ -55,4 +56,4 @@ export class Quizz {
 }
 
 export const QuizzSchema = SchemaFactory.createForClass(Quizz);
-
+QuizzSchema.index({ title: 'text'});

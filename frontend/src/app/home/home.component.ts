@@ -49,6 +49,12 @@ export class HomeComponent {
     return this._quizList;
   }
 
+  search(keyword: string): void {
+    this._quizService.searchByKeyword(keyword).subscribe({
+      next: (q: Quiz[]) => this._quizList = q
+    });
+  }
+
   private _getCategoryIdByName(name: string): number | undefined {
     for (const [key, value] of Object.entries(Category)) {
         if (value.name === name) {

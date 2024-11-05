@@ -14,6 +14,7 @@ export const environment = {
       quiz: '/quiz',
       oneQuiz: '/quiz/:id',
       category: '/quiz/category/:category',
+      search: '/quiz/search',
     },
   },
 };

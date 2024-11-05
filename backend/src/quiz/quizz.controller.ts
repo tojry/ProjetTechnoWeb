@@ -1,9 +1,9 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request, ClassSerializerInterceptor, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request, ClassSerializerInterceptor, UseInterceptors, Query} from '@nestjs/common';
 import {QuizzService} from "./quizz.service";
 import {CreateAndPutQuizzDto} from "./dto/createQuizz-dto";
 import {Observable} from "rxjs";
 import {Quizz, QuizzDocument} from "./schema/quizz.schema";
-import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { QuizzEntity } from './entities/quizz.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { HandlerParamsCategory, HandlerParamsId } from './validators/handler-params';
@@ -121,10 +121,19 @@ export class QuizzController {
         return this._quizzService.findByCategory(params.category);
     }
 
-    /**
-    @Get(':motcle')
-    searchQuizzByKeyword(@Param('motcle') motcle: string): string {
-        return 'TODO';
-    }**/
+    @ApiOkResponse({
+        description: 'Returns an array of quiz whose title contains the specified keyword.',
+        type: [QuizzEntity]
+    })
+    @ApiQuery({ 
+        name: 'keyword', 
+        type: String, 
+        description: 'Keyword to search in quiz titles', 
+        required: true 
+    })
+    @Get('search')
+    searchQuizzByKeyword(@Query('keyword') keyword: string): Observable<QuizzEntity[]> {
+        return this._quizzService.findByKeywordInTitle(keyword);
+    }
 
 }

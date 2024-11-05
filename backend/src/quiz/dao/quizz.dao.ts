@@ -12,6 +12,11 @@ export class QuizzDao {
         private readonly _quizzModel: Model<Quizz>,
     ) {}
 
+    /*
+    async onModuleInit() {
+        await this._quizzModel.syncIndexes();
+    }*/
+
     find = (): Observable<Quizz[]> =>
         from(this._quizzModel.find({})).pipe(map((quiz) => [].concat(quiz)));
 
@@ -41,5 +46,8 @@ export class QuizzDao {
 
     findByAuthor = (author: string): Observable<Quizz[]> =>
         from(this._quizzModel.find({ author: author })).pipe(map((quiz) => [].concat(quiz)));
+
+    searchByTitle = (keyword: string): Observable<Quizz[]> =>
+        from(this._quizzModel.find({ $text: { $search: keyword } })).pipe(map((quiz) => [].concat(quiz)));
 
 }

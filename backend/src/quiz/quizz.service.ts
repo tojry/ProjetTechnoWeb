@@ -13,6 +13,7 @@ export class QuizzService {
         @Inject(forwardRef(() => UserService))
         private readonly _userService: UserService
     ) {}
+    
 
     // Méthode pour créer un quizz
     createQuizz(quizz: CreateAndPutQuizzDto): Observable<QuizzEntity> {
@@ -96,6 +97,13 @@ export class QuizzService {
 
     findByAuthor(author: string): Observable<QuizzEntity[]> {
         return from(this._quizzDao.findByAuthor(author)).pipe(
+            map((q) => (q || []).map((q) => new QuizzEntity(q))),
+            defaultIfEmpty([]),
+        );
+    }
+
+    findByKeywordInTitle(keyword: string): Observable<QuizzEntity[]> {
+        return from(this._quizzDao.searchByTitle(keyword)).pipe(
             map((q) => (q || []).map((q) => new QuizzEntity(q))),
             defaultIfEmpty([]),
         );

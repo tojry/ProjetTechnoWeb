@@ -9,7 +9,8 @@ import * as Config from 'config';
 @Module({
   imports: [
       MongooseModule.forRoot(Config.get<string>('mongodb.uri'), {
-    serverApi: { version: '1', strict: true, deprecationErrors: true }
+    serverApi: { version: '1', strict: false, deprecationErrors: true},
+    autoIndex: true
     }),
       UserModule, QuizzModule],
   controllers: [AppController],

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackendRoutesService } from './backend-routes.service';
 import { defaultIfEmpty, filter, Observable } from 'rxjs';
@@ -29,6 +29,18 @@ export class QuizService {
 
     return this._http.get<Quiz[]>(
       this._backend.routes.category.replace(':category', category)
+    ).pipe(
+      filter((quizList: Quiz[]) => !!quizList),
+      defaultIfEmpty([])
+    );
+  }
+
+  searchByKeyword(keyword: string): Observable<Quiz[]> {
+
+    const params = new HttpParams().set('keyword', keyword);
+    return this._http.get<Quiz[]>(
+      this._backend.routes.search,
+      { params }
     ).pipe(
       filter((quizList: Quiz[]) => !!quizList),
       defaultIfEmpty([])
