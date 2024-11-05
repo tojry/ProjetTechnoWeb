@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {Question} from "../schema/question.schema";
-import { IsInstance, IsNotEmpty, IsString, Validate, ValidateNested } from "class-validator";
+import { IsInstance, IsNotEmpty, IsNumber, IsString, Validate, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { QuestionDto } from "./question.dto";
 
@@ -27,11 +27,10 @@ export class CreateAndPutQuizzDto {
     @ApiProperty({
         name: 'category',
         description: 'Category of the quiz',
-        example: 'Sport',
+        example: '2',
     })
-    @IsString()
-    @IsNotEmpty()
-    readonly category : string;
+    @IsNumber()
+    readonly category : number;
 
     @ApiProperty({
         name: 'questions',

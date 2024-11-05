@@ -1,9 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose, Type } from "class-transformer";
 import { QuestionEntity } from "./question.entity";
+import { Quizz } from "../schema/quizz.schema";
 
 @Exclude()
 export class QuizzEntity {
+
+    constructor(partial: Partial<Quizz>) {
+        Object.assign(this, partial);
+    }
 
     @ApiProperty({
         name: 'id',
@@ -35,9 +40,11 @@ export class QuizzEntity {
     @ApiProperty({
         name: 'category',
         description: 'Category of the quizz',
-        example: 'Sport',
+        example: 2,
     })
-    category: string;
+    @Expose()
+    @Type(() => Number)
+    category: number;
 
     @ApiProperty({
         name: 'questions',

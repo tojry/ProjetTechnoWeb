@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Question, QuestionSchema } from './question.schema';
 
 export type QuizzDocument = Quizz & Document;
 
@@ -9,17 +10,18 @@ export type QuizzDocument = Quizz & Document;
         virtuals: true,
         transform: (doc: any, ret: any) => {
             delete ret._id;
+            return ret;
         },
     },
-    versionKey: false,
-    autoIndex : true
+    versionKey: false
 })
 export class Quizz {
-    /**@Prop({
-        type: mongoose.Schema.Types.Number,
+
+    @Prop({
+        type: mongoose.Schema.Types.ObjectId,
         auto: true,
     })
-    id: any;**/
+    _id: any;
 
     @Prop({
         type: String,
@@ -36,22 +38,22 @@ export class Quizz {
     title: string;
 
     @Prop({
-        type: String,
-        required: true,
-        minlength: 2,
-        trim: true,
+        type: Number,
+        required: true
     })
-    category: string;
+    category: number;
 
     @Prop({
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Question',
-        default: []
+        type: [QuestionSchema],
+        required: true,
+        validate: {
+            validator: (v: Question[]) => v.length > 0,
+            message: 'The quiz must have at least one question.',
+        },
     })
-    questions: mongoose.Types.ObjectId[];
+    questions: Question[];
 
 }
 
 export const QuizzSchema = SchemaFactory.createForClass(Quizz);
 
-QuizzSchema.index({ category: 1}, { unique: true });

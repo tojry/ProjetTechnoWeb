@@ -40,7 +40,7 @@ export class CreateUserComponent {
 
   registerUser(user: UserAuth){
     user = {
-      id: user.id,
+      username: user.username,
       password: user.password
     }
 
@@ -65,7 +65,7 @@ export class CreateUserComponent {
   
   private _buildForm(): FormGroup {
     return new FormGroup({
-      id : new FormControl(
+      username : new FormControl(
         '', 
         Validators.compose([Validators.required, Validators.minLength(3)])
       ),

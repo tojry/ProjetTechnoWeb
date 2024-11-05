@@ -1,45 +1,66 @@
 
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {from, Observable} from "rxjs";
+import {catchError, from, map, mergeMap, Observable, of, throwError} from "rxjs";
 import {User, UserDocument} from "./schema/user.schema";
 import {CreateAndPutUserDto} from "./dto/createAndPut-user.dto";
 import {Quizz} from "../quiz/schema/quizz.schema";
 import {CreateAndPutQuizzDto} from "../quiz/dto/createQuizz-dto";
+import { UserEntity } from './entities/user.entity';
+import { QuizzEntity } from 'src/quiz/entities/quizz.entity';
+import { UserDao } from './dao/user.dao';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectModel(User.name)
-        private readonly userModel: Model<UserDocument>,
+        private readonly _userDao: UserDao,
     ) {}
 
     // Méthode pour créer un user
-    createUser(user: CreateAndPutUserDto): Observable<UserDocument> {
-        const newUser = new this.userModel(user);
-        return from(newUser.save()); // Convertit la Promise en Observable
+    createUser(user: CreateAndPutUserDto): Observable<UserEntity> {
+        return this._hashPassword(user).pipe(
+            mergeMap((hashedUser: CreateAndPutUserDto) => 
+                this._userDao.save(hashedUser),
+            ),
+            map((savedUser) => new UserEntity({ username: savedUser.username })),
+            catchError((e) => 
+                e.code === 11000
+                ? throwError(() => new ConflictException('User with this username already exists'))
+                : throwError(() => new UnprocessableEntityException(e.message)))
+        );
     }
 
-    async findOne(id_tmp: string): Promise<User | undefined> {
-        const user = await this.userModel.findOne({ id: id_tmp }).exec();
-        return user ?? undefined; // Retourne undefined si aucun document trouvé
+    findOne(id: string): Observable<UserEntity> {
+        return from(this._userDao.findById(id)).pipe(
+            mergeMap((user) => 
+                !!user 
+            ? of(new UserEntity({ username: user.username })) 
+            : throwError(
+                () => new NotFoundException(`User with id '${id}' not found`))
+            ),
+            catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+        );
     }
 
-    async delete(id: string): Promise<User | null> {
-        return this.userModel.findOneAndDelete({ id: id }).lean().exec();
+    findLoginInfo(username: string): Observable<{ id: string; password: string } | void> {
+        return from(this._userDao.findByUsername(username)).pipe(
+            mergeMap((user) => 
+                !!user 
+            ? of({id: user._id,password: user.password}) 
+            : throwError(
+                () => new NotFoundException(`User with username '${username}' not found`))
+            ),
+            catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+        );
     }
 
-    async modify(id_tmp: string, createAndPutUserDto: CreateAndPutUserDto): Promise<User | undefined> {
-        return this.userModel.findOneAndUpdate(
-            { id: id_tmp },
-            {
-                $set: {
-                    id: createAndPutUserDto.id,
-                    password: createAndPutUserDto.password,
-                }
-            },
-            { new: true } // Retourne le document mis à jour
-        ).exec();
+    private _hashPassword(user: CreateAndPutUserDto) : Observable<CreateAndPutUserDto> {
+        return from(bcrypt.genSalt(10)).pipe(
+            mergeMap((salt) => bcrypt.hash(user.password, salt)),
+            map((hash) => ({ ...user, password: hash })),
+        );
     }
+
 }

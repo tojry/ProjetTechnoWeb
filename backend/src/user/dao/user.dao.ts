@@ -18,5 +18,8 @@ export class UserDao {
     save = (user: CreateAndPutUserDto): Observable<User> =>
         from(new this._userModel(user).save());
 
+    findByUsername(username: string): Observable<User | void> {
+        return from(this._userModel.findOne({ username: username }));
+    }
 
 }

@@ -2,7 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose, Type } from "class-transformer";
 
 @Exclude()
-export class JWTTokenEntity{
+export class JWTEntity{
+
+    constructor(partial: Partial<JWTEntity>) {
+        Object.assign(this, partial);
+    }
 
     @ApiProperty({
         name: 'token',

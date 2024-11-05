@@ -50,7 +50,7 @@ export class LoginComponent {
 
   private _buildForm(): FormGroup {
     return new FormGroup({
-      id : new FormControl(
+      username : new FormControl(
         '', 
         Validators.compose([Validators.required])
       ),

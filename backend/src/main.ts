@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -25,6 +25,13 @@ async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
   );
 
   app.enableCors({ origin: config.cors });
+
+  await app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
 // create swagger options
 const options = new DocumentBuilder()

@@ -1,6 +1,6 @@
 import { Quiz } from "./quiz.interface";
 
 export interface User {
-    id : string;
+    username : string;
     createdQuizs : Quiz[];
 }

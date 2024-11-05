@@ -6,7 +6,7 @@ server:
     - "https://127.0.0.1:4200"
     - "https://localhost:4200"
 swagger:
-  title: The Quiz API
+  title: EasyQuizy API
   description: Projet de technologies web
   version: 1.0
   tag: quiz

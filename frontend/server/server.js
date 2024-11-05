@@ -26,7 +26,7 @@ server.get('/user', (req, res) => {
       res.status(401).send();
     }else{
       const userId = usersData.users.find(
-        user => (user.id === loginData.users.find(
+        user => (user.username === loginData.users.find(
           u => u.token === req.headers.authorization.replace("Bearer ", ""))
           .id)
       ).id;
@@ -42,21 +42,21 @@ server.get('/user', (req, res) => {
 
 server.post('/user', (req, res) => {
 
-  if(usersData.users.find(user => user.id === req.body.id) !== undefined){
+  if(usersData.users.find(user => user.username === req.body.username) !== undefined){
     res.status(409).send();
   }else{
     usersData.users.push(req.body);
-    loginData.users.push({id: req.body.id, token: 'token_' + req.body.id});
+    loginData.users.push({id: req.body.username, token: 'token_' + req.body.username});
     res.status(200).send();
   }
 });
 
 server.post('/user/login', (req, res) => {
 
-  if(usersData.users.find(user => user.id === req.body.id) === undefined || usersData.users.find(user => user.id === req.body.id).password !== req.body.password){
+  if(usersData.users.find(user => user.username === req.body.username) === undefined || usersData.users.find(user => user.username === req.body.username).password !== req.body.password){
     res.status(401).send();
   }else{
-    res.status(200).send(loginData.users.find(user => user.id === req.body.id));
+    res.status(200).send(loginData.users.find(user => user.username === req.body.username));
   }
 });
 
@@ -87,7 +87,7 @@ server.get('/quiz/category/:category', (req, res) => {
 
 server.put('/quiz/:id', (req, res) => {
 
-  const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;
+  const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.username;
 
   if(quizData.quiz.find(q => q.id.toString() === req.params.id) === undefined){
     res.status(404).send();
@@ -101,7 +101,7 @@ server.put('/quiz/:id', (req, res) => {
 
 server.delete('/quiz/:id', (req, res) => {
   
-  const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.id;
+  const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.username;
 
   if(bearerId === undefined || bearerId !== quizData.quiz.find(q => q.id.toString() === req.params.id).author){
     res.status(401).send();

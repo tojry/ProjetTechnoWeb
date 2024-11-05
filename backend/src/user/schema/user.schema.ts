@@ -14,12 +14,20 @@ export type UserDocument = User & Document;
     versionKey: false,
 })
 export class User {
+
+    @Prop({
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true,
+    })
+    _id: any;
+
     @Prop({
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     })
-    id: string;
+    username: string;
 
     @Prop({
         type: String,
@@ -31,5 +39,3 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-UserSchema.index({ nom: 1}, { unique: true });

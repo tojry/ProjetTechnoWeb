@@ -4,13 +4,13 @@ import { IsString, IsNotEmpty, Matches } from "class-validator";
 export class CreateAndPutUserDto {
 
     @ApiProperty({
-        name: 'id',
-        description: 'Username',
+        name: 'username',
+        description: 'Username (unique)',
         example: 'UserTest',
     })
     @IsString()
     @IsNotEmpty()
-    readonly id : string;
+    readonly username : string;
 
     @ApiProperty({
         name: 'password',

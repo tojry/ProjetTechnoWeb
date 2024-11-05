@@ -12,11 +12,32 @@ export class QuizzDao {
         private readonly _quizzModel: Model<Quizz>,
     ) {}
 
+    find = (): Observable<Quizz[]> =>
+        from(this._quizzModel.find({})).pipe(map((quiz) => [].concat(quiz)));
+
     findById = (id: string): Observable<Quizz | void> =>
         from(this._quizzModel.findById(id));
 
     save = (quizz: CreateAndPutQuizzDto): Observable<Quizz> =>
         from(new this._quizzModel(quizz).save());
+
+    findOneAndUpdate = (
+        id: string,
+        quiz: CreateAndPutQuizzDto,
+      ): Observable<Quizz | void> =>
+        from(
+          this._quizzModel.findByIdAndUpdate(id, quiz, {
+            new: true,
+            runValidators: true,
+          }),
+        );
+
+    findOneAndDelete(id: string): Observable<Quizz | void> {
+        return from(this._quizzModel.findByIdAndDelete(id));
+    }
+
+    findByCategory = (categoryId: number): Observable<Quizz[]> =>
+        from(this._quizzModel.find({ category: categoryId })).pipe(map((quiz) => [].concat(quiz)));
 
 
 }

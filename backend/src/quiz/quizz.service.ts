@@ -1,57 +1,96 @@
 
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Quizz, QuizzDocument } from './schema/quizz.schema';
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
 import {CreateAndPutQuizzDto} from "./dto/createQuizz-dto";
-import {from, Observable} from "rxjs";
-import {User} from "../user/schema/user.schema";
-import {ObjectId} from "mongodb";
+import {catchError, defaultIfEmpty, from, map, mergeMap, Observable, of, throwError} from "rxjs";
+import { QuizzDao } from './dao/quizz.dao';
+import { QuizzEntity } from './entities/quizz.entity';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class QuizzService {
     constructor(
-        @InjectModel(Quizz.name)
-        private readonly quizzModel: Model<QuizzDocument>,
+        private readonly _quizzDao: QuizzDao,
+        private readonly _userService: UserService
     ) {}
 
     // Méthode pour créer un quizz
-    createQuizz(quizz: CreateAndPutQuizzDto): Observable<QuizzDocument> {
-        const newQuizz = new this.quizzModel(quizz);
-        return from(newQuizz.save()); // Convertit la Promise en Observable
+    createQuizz(quizz: CreateAndPutQuizzDto): Observable<QuizzEntity> {
+        return from(this._quizzDao.save(quizz)).pipe(
+            map((q) => new QuizzEntity(q)),
+            catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+        );
     }
 
     // Méthode pour récupérer tous les quizz
-    async getAllQuizz(): Promise<Quizz[]> {
-        return this.quizzModel.find().exec(); // Récupère tous les quiz de la collection
+    getAllQuizz(): Observable<QuizzEntity[]> {
+        return from(this._quizzDao.find()).pipe(
+            map((q) => (q || []).map((q) => new QuizzEntity(q))),
+            defaultIfEmpty([]),
+        );
     }
 
-    async findOne(id_tmp: string): Promise<Quizz | undefined> {
-        const quizz = await this.quizzModel.findOne({ _id: id_tmp }).exec();
-        return quizz ?? undefined; // Retourne undefined si aucun document trouvé
+    findOne(id: string): Observable<QuizzEntity> {
+        return from(this._quizzDao.findById(id)).pipe(
+            mergeMap((q) => 
+                !!q 
+            ? of(new QuizzEntity(q)) 
+            : throwError(
+                () => new NotFoundException(`Quiz with id '${id}' not found`))
+            ),
+            catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+        );
     }
 
-    async modify(id: string, createAndPutQuizzDto: CreateAndPutQuizzDto): Promise<Quizz | undefined> {
-        return this.quizzModel.findOneAndUpdate(
-            { _id: id },
-            {
-                $set: {
-                    author: createAndPutQuizzDto.author,
-                    title: createAndPutQuizzDto.title,
-                    category: createAndPutQuizzDto.category,
-                    questions: createAndPutQuizzDto.questions
-                }
-            },
-            { new: true } // Retourne le document mis à jour
-        ).exec();
+    modify(id: string, quiz: CreateAndPutQuizzDto, userId: string): Observable<QuizzEntity> {
+        return from(this._userService.findOne(userId)).pipe(
+            mergeMap((user) => 
+                this.findOne(id).pipe(
+                    mergeMap((q) => 
+                        q.author === user.username
+                            ? from(this._quizzDao.findOneAndUpdate(id, quiz)).pipe(
+                                mergeMap((quizUpdated) => 
+                                    !!quizUpdated
+                                        ? of(new QuizzEntity(quizUpdated))
+                                        : throwError(() => new NotFoundException(`Quiz with id '${id}' not found`))
+                                ),
+                                catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+                            )
+                            : throwError(() => new UnauthorizedException("You can't modify this quiz"))
+                    ),
+                )
+            ),
+            catchError((e) => throwError(() => e))
+        );
     }
 
-    async delete(id: string): Promise<Quizz | null> {
-        return this.quizzModel.findByIdAndDelete(id).exec();
+    delete(id: string, userId: string): Observable<void> {
+
+        return from(this._userService.findOne(userId)).pipe(
+            mergeMap((user) => 
+                this.findOne(id).pipe(
+                    mergeMap((q) => 
+                        q.author === user.username
+                            ? from(this._quizzDao.findOneAndDelete(id)).pipe(
+                                mergeMap((quizDeleted) => 
+                                    !!quizDeleted
+                                        ? of(undefined)
+                                        : throwError(() => new NotFoundException(`Quiz with id '${id}' not found`))
+                                ),
+                                catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+                            )
+                            : throwError(() => new UnauthorizedException("You can't delete this quiz"))
+                    ),
+                )
+            ),
+            catchError((e) => throwError(() => e))
+        );
     }
 
-    async findByCategory(categoryName: string): Promise<Quizz[]> {
-        return this.quizzModel.find({ category: categoryName }).exec();
+    findByCategory(categoryId: number): Observable<QuizzEntity[]> {
+        return from(this._quizzDao.findByCategory(categoryId)).pipe(
+            map((q) => (q || []).map((q) => new QuizzEntity(q))),
+            defaultIfEmpty([]),
+        );
     }
 
 

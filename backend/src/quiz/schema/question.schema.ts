@@ -10,6 +10,7 @@ export type QuestionDocument = Question & Document;
         virtuals: true,
         transform: (doc: any, ret: any) => {
             delete ret._id;
+            return ret;
         },
     },
     versionKey: false,
@@ -29,25 +30,23 @@ export class Question {
     question: string;
 
     @Prop({
-        type: [
-            {
-                texte: { type: String, required: true, trim: true },
-                correct: { type: Boolean, required: true }
-            }
-        ],
-        validate: [
-            (val: Array<any>) => val.filter((res) => res.correct).length === 1,
-            'Une seule réponse doit être correcte'
-        ],
+        type: [String],
         required: true,
+        trim: true,
+        validate: {
+            validator: (v: string[]) => v.length === 3,
+            message: 'Each question must have exactly 3 answers.',
+        },
     })
-    answers: {
-        texte: string;
-        correct: boolean;
-    }[];
+    answers: string[];
+
+    @Prop({
+        type: Number,
+        required: true,
+        min: 0,
+        max: 2
+    })
+    correctAnswer: number;
 }
 
 export const QuestionSchema = SchemaFactory.createForClass(Question);
-
-// Index pour éviter des doublons d'intitulés
-QuestionSchema.index({ intitule: 1 }, { unique: true });

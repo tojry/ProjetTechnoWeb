@@ -1,12 +1,13 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request} from '@nestjs/common';
 import {QuizzService} from "./quizz.service";
 import {CreateAndPutQuizzDto} from "./dto/createQuizz-dto";
 import {Observable} from "rxjs";
 import {Quizz, QuizzDocument} from "./schema/quizz.schema";
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { QuizzEntity } from './entities/quizz.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('quizz')
+@Controller('quiz')
 export class QuizzController {
     /**
      * Handler to answer to /quizz route
@@ -22,7 +23,7 @@ export class QuizzController {
         type: CreateAndPutQuizzDto,
       })
     @Post()
-    ajouterQuizz(@Body() createAndPutQuizzDto: CreateAndPutQuizzDto): Observable<QuizzDocument> {
+    ajouterQuizz(@Body() createAndPutQuizzDto: CreateAndPutQuizzDto): Observable<QuizzEntity> {
         return this._quizzService.createQuizz(createAndPutQuizzDto);
     }
 
@@ -40,7 +41,7 @@ export class QuizzController {
         allowEmptyValue: false
       })
     @Get(':id')
-    getQuizzById(@Param('id') id: string): Promise<Quizz | undefined> {
+    getQuizzById(@Param('id') id: string): Observable<QuizzEntity> {
         return this._quizzService.findOne(id);
     }
 
@@ -64,9 +65,10 @@ export class QuizzController {
         type: CreateAndPutQuizzDto,
     })
     @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
-    updateQuizzById(@Param('id') id: string, @Body() createAndPutQuizzDto: CreateAndPutQuizzDto): Promise<Quizz | undefined> {
-        return this._quizzService.modify(id, createAndPutQuizzDto);
+    updateQuizzById(@Param('id') id: string, @Body() createAndPutQuizzDto: CreateAndPutQuizzDto, @Request() req): Observable<QuizzEntity> {
+        return this._quizzService.modify(id, createAndPutQuizzDto, req.user.userId);
     }
 
     @ApiNoContentResponse({
@@ -85,24 +87,18 @@ export class QuizzController {
         allowEmptyValue: false
     })
     @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    deleteQuizzById(@Param('id') id: string): Promise<Quizz | null> {
-        return this._quizzService.delete(id);
+    deleteQuizzById(@Param('id') id: string, @Request() req): Observable<void> {
+        return this._quizzService.delete(id, req.user.userId);
     }
-
-    /*
-    @Post(':id')
-    answerQuizzById(@Param('id') id: string): string {
-        return 'TODO';
-    }
-    */
 
     @ApiOkResponse({
         description: 'Returns an array of all quiz.',
         type: [QuizzEntity]
     })
     @Get()
-    getQuizzs(): Promise<Quizz[]> {
+    getQuizzs(): Observable<QuizzEntity[]> {
         return this._quizzService.getAllQuizz();
     }
 
@@ -114,12 +110,12 @@ export class QuizzController {
     @ApiParam({
         name: 'category',
         description: 'Category of the quiz',
-        type: String,
+        type: Number,
         allowEmptyValue: false
     })
     @Get('category/:category')
-    getQuizzByCategory(@Param('category') categorie: string): Promise<Quizz[]> {
-        return this._quizzService.findByCategory(categorie);
+    getQuizzByCategory(@Param('category') categoryId: number): Observable<QuizzEntity[]> {
+        return this._quizzService.findByCategory(categoryId);
     }
 
     /**

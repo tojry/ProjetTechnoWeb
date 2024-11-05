@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsString, Max, Min } from "class-validator";
 
 export class QuestionDto {
 
@@ -28,5 +28,7 @@ export class QuestionDto {
         example: 0,
     })
     @IsNumber()
+    @Min(0)
+    @Max(2)
     readonly correctAnswer: number;
 }

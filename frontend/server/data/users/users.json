@@ -1,15 +1,15 @@
 {
     "users":[
         {
-            "id": "UserTest1",
+            "username": "UserTest1",
             "password": "password1"
         },
         {
-            "id": "UserTest2",
+            "username": "UserTest2",
             "password": "password2"
         },
         {
-            "id": "UserTest3",
+            "username": "UserTest3",
             "password": "password3"
         }
     ]

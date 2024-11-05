@@ -1,15 +1,15 @@
 {
     "users": [
         {
-            "id": "UserTest1",
+            "username": "UserTest1",
             "token": "token_user_1"
         },
         {
-            "id": "UserTest2",
+            "username": "UserTest2",
             "token": "token_user_2"
         },
         {
-            "id": "UserTest3",
+            "username": "UserTest3",
             "token": "token_user_3"
         }
     ]

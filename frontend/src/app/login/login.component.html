@@ -10,9 +10,9 @@
         <div class="mb-4">
           <span class="p-input-icon-left">
             <i class="pi pi-user"></i>
-            <input id="username" type="text" placeholder="Nom d'utilisateur" formControlName="id" class="p-inputtext w-full"/>
+            <input id="username" type="text" placeholder="Nom d'utilisateur" formControlName="username" class="p-inputtext w-full"/>
           </span>
-          <div *ngIf="loginForm.get('id')?.dirty && loginForm.get('id')?.hasError('required')">
+          <div *ngIf="loginForm.get('username')?.dirty && loginForm.get('username')?.hasError('required')">
             <small class="p-error">Ce champ est obligatoire</small>
           </div>
         </div>

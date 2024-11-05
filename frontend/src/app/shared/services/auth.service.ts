@@ -24,7 +24,7 @@ export class AuthService {
       .pipe(
         tap(resp => { 
           localStorage.setItem('token', resp.token); 
-          localStorage.setItem('username', user.id);
+          localStorage.setItem('username', user.username);
           this._isLoggedIn = true;
         }),
         catchError(err => throwError(() => err))
