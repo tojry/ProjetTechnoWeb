@@ -311,8 +311,8 @@ body a {
 }
 
 .quiz-card-answers {
-    padding-left: 15rem;
-    padding-right: 15rem;
+    padding-left: 20%;
+    padding-right: 20%;
 }
 
 .quiz-card button {
@@ -330,10 +330,10 @@ body a {
 }
 
 .tag {
-    padding: 4px 8px;
+    padding: 8px 8px;
     border-radius: var(--border-radius);
     color: var(--primary-color-text);
     font-weight: bold;
     text-align: center;
-    width: 50%;
+    width: 80%;
   }
