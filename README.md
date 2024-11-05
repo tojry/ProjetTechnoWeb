@@ -1,5 +1,7 @@
 # ProjetTechnoWeb
 
+Théo JOFFROY et Matthieu GALANTE
+
 ## Installation et exécution
 ```
 git clone https://github.com/tojry/ProjetTechnoWeb.git
