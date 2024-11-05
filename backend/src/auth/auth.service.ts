@@ -16,7 +16,7 @@ export class AuthService {
         
         return from(this._usersService.findLoginInfo(loginDto.username)).pipe(
             mergeMap((user) => 
-                user
+                !!user
                     ? from(bcrypt.compare(loginDto.password, user.password)).pipe(
                         map((match) => {
                             if (!match) {

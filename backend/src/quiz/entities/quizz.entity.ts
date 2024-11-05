@@ -7,7 +7,12 @@ import { Quizz } from "../schema/quizz.schema";
 export class QuizzEntity {
 
     constructor(partial: Partial<Quizz>) {
-        Object.assign(this, partial);
+
+       this.id = partial._id;
+       this.author = partial.author;
+       this.title = partial.title;
+       this.category = partial.category;
+       this.questions = partial.questions;
     }
 
     @ApiProperty({

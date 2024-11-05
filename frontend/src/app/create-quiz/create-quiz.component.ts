@@ -86,11 +86,10 @@ export class CreateQuizComponent {
       ...quiz, 
       category: this._getCategoryIdByName(quiz.category.toString()) || 0,
       author: this._isUpdateMode ? this._quizData.author : this._authService.username!,
-      id: this._isUpdateMode ? this._quizData.id : undefined
     };
 
     if(this._isUpdateMode){
-      this._quizService.update(q).subscribe({
+      this._quizService.update(this._quizData.id!.toString(), q).subscribe({
         next: () => this._router.navigate(['/user']),
         error: (err: HttpErrorResponse) => {
           if(err.status == 401){

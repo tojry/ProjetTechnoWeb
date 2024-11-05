@@ -6,8 +6,10 @@ import { User } from "../schema/user.schema";
 @Exclude()
 export class UserEntity{
 
-    constructor(partial: Partial<User>) {
-        Object.assign(this, partial);
+    
+    constructor(_username: string, _createdQuizs: QuizzEntity[]) {
+        this.username = _username;
+        this.createdQuizs = _createdQuizs;
     }
 
     @ApiProperty({

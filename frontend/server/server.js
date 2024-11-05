@@ -103,7 +103,9 @@ server.delete('/quiz/:id', (req, res) => {
   
   const bearerId = loginData.users.find(user => user.token === req.headers.authorization.replace("Bearer ", ""))?.username;
 
-  if(bearerId === undefined || bearerId !== quizData.quiz.find(q => q.id.toString() === req.params.id).author){
+  if(quizData.quiz.find(q => q.id.toString() === req.params.id) === undefined){
+    res.status(404).send();
+  }else if(bearerId === undefined || bearerId !== quizData.quiz.find(q => q.id.toString() === req.params.id).author){
     res.status(401).send();
   }else{
     quizData.quiz = quizData.quiz.filter(q => q.id.toString() !== req.params.id);

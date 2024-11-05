@@ -39,5 +39,7 @@ export class QuizzDao {
     findByCategory = (categoryId: number): Observable<Quizz[]> =>
         from(this._quizzModel.find({ category: categoryId })).pipe(map((quiz) => [].concat(quiz)));
 
+    findByAuthor = (author: string): Observable<Quizz[]> =>
+        from(this._quizzModel.find({ author: author })).pipe(map((quiz) => [].concat(quiz)));
 
 }

@@ -1,5 +1,5 @@
 
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
+import { ConflictException, forwardRef, Inject, Injectable, NotFoundException, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
 import {CreateAndPutQuizzDto} from "./dto/createQuizz-dto";
 import {catchError, defaultIfEmpty, from, map, mergeMap, Observable, of, throwError} from "rxjs";
 import { QuizzDao } from './dao/quizz.dao';
@@ -10,6 +10,7 @@ import { UserService } from 'src/user/user.service';
 export class QuizzService {
     constructor(
         private readonly _quizzDao: QuizzDao,
+        @Inject(forwardRef(() => UserService))
         private readonly _userService: UserService
     ) {}
 
@@ -88,6 +89,13 @@ export class QuizzService {
 
     findByCategory(categoryId: number): Observable<QuizzEntity[]> {
         return from(this._quizzDao.findByCategory(categoryId)).pipe(
+            map((q) => (q || []).map((q) => new QuizzEntity(q))),
+            defaultIfEmpty([]),
+        );
+    }
+
+    findByAuthor(author: string): Observable<QuizzEntity[]> {
+        return from(this._quizzDao.findByAuthor(author)).pipe(
             map((q) => (q || []).map((q) => new QuizzEntity(q))),
             defaultIfEmpty([]),
         );

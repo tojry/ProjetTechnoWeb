@@ -1,6 +1,6 @@
-import {Body, Controller, Get, Post, Request, UseGuards} from '@nestjs/common';
+import {Body, ClassSerializerInterceptor, Controller, Get, Post, Request, UseGuards, UseInterceptors} from '@nestjs/common';
 import {CreateAndPutUserDto} from "./dto/createAndPut-user.dto";
-import { ApiCreatedResponse, ApiBody, ApiConflictResponse, ApiUnauthorizedResponse, ApiOkResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiBody, ApiConflictResponse, ApiUnauthorizedResponse, ApiOkResponse, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { Observable } from 'rxjs';
 import { JWTEntity } from './entities/jwt.entity';
@@ -9,6 +9,8 @@ import {AuthService} from "../auth/auth.service";
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
+@ApiTags('user')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
     /**

@@ -1,12 +1,15 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request, ClassSerializerInterceptor, UseInterceptors} from '@nestjs/common';
 import {QuizzService} from "./quizz.service";
 import {CreateAndPutQuizzDto} from "./dto/createQuizz-dto";
 import {Observable} from "rxjs";
 import {Quizz, QuizzDocument} from "./schema/quizz.schema";
-import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { QuizzEntity } from './entities/quizz.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { HandlerParamsCategory, HandlerParamsId } from './validators/handler-params';
 
+@ApiTags('quiz')
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('quiz')
 export class QuizzController {
     /**
@@ -41,8 +44,8 @@ export class QuizzController {
         allowEmptyValue: false
       })
     @Get(':id')
-    getQuizzById(@Param('id') id: string): Observable<QuizzEntity> {
-        return this._quizzService.findOne(id);
+    getQuizzById(@Param() params: HandlerParamsId): Observable<QuizzEntity> {
+        return this._quizzService.findOne(params.id);
     }
 
     @ApiOkResponse({
@@ -67,8 +70,8 @@ export class QuizzController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    updateQuizzById(@Param('id') id: string, @Body() createAndPutQuizzDto: CreateAndPutQuizzDto, @Request() req): Observable<QuizzEntity> {
-        return this._quizzService.modify(id, createAndPutQuizzDto, req.user.userId);
+    updateQuizzById(@Param() params: HandlerParamsId, @Body() createAndPutQuizzDto: CreateAndPutQuizzDto, @Request() req): Observable<QuizzEntity> {
+        return this._quizzService.modify(params.id, createAndPutQuizzDto, req.user.userId);
     }
 
     @ApiNoContentResponse({
@@ -89,8 +92,8 @@ export class QuizzController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    deleteQuizzById(@Param('id') id: string, @Request() req): Observable<void> {
-        return this._quizzService.delete(id, req.user.userId);
+    deleteQuizzById(@Param() params: HandlerParamsId, @Request() req): Observable<void> {
+        return this._quizzService.delete(params.id, req.user.userId);
     }
 
     @ApiOkResponse({
@@ -114,8 +117,8 @@ export class QuizzController {
         allowEmptyValue: false
     })
     @Get('category/:category')
-    getQuizzByCategory(@Param('category') categoryId: number): Observable<QuizzEntity[]> {
-        return this._quizzService.findByCategory(categoryId);
+    getQuizzByCategory(@Param() params: HandlerParamsCategory,): Observable<QuizzEntity[]> {
+        return this._quizzService.findByCategory(params.category);
     }
 
     /**

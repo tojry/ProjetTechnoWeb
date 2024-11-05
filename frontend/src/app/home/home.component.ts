@@ -22,11 +22,11 @@ export class HomeComponent {
       category => ({ 
         label: category.name, 
         command: () => this._quizService.fetchCategory(this._getCategoryIdByName(category.name)!).subscribe(
-          (q: any) => { this._quizList = q; this._categoryName = category.name }
+          (q: Quiz[]) => { this._quizList = q; this._categoryName = category.name }
         ) })
     );
     this._categoryItems.unshift({ label: 'Tous les quiz', command: () => this._quizService.fetchAll().subscribe(
-      (q: any) => { this._quizList = q.quiz; this._categoryName = 'Tous les quiz' }
+      (q: Quiz[]) => { this._quizList = q; this._categoryName = 'Tous les quiz' }
     )})
   }
 
@@ -41,7 +41,7 @@ export class HomeComponent {
   ngOnInit(): void {
     
     this._quizService.fetchAll().subscribe({
-      next: (q: any) => this._quizList = q.quiz
+      next: (q: Quiz[]) => this._quizList = q
     });
   }
 

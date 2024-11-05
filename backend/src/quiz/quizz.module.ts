@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { QuizzController } from './quizz.controller';
 import {QuizzService} from "./quizz.service";
 import {QuizzDao} from "./dao/quizz.dao";
@@ -10,9 +10,10 @@ import { UserModule } from 'src/user/user.module';
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: Quizz.name, schema: QuizzSchema }]),
-        UserModule
+        forwardRef(() => UserModule)
     ],
     controllers: [QuizzController],
-    providers: [QuizzService, QuizzDao]
+    providers: [QuizzService, QuizzDao],
+    exports: [QuizzService, QuizzDao]
 })
 export class QuizzModule {}

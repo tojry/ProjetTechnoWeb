@@ -26,6 +26,7 @@ async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
 
   app.enableCors({ origin: config.cors });
 
+  
   await app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -38,7 +39,6 @@ const options = new DocumentBuilder()
   .setTitle(swaggerConfig.title)
   .setDescription(swaggerConfig.description)
   .setVersion(swaggerConfig.version)
-  .addTag(swaggerConfig.tag)
   .build(); 
 
 // create swagger document

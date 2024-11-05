@@ -10,7 +10,6 @@ export type QuestionDocument = Question & Document;
         virtuals: true,
         transform: (doc: any, ret: any) => {
             delete ret._id;
-            return ret;
         },
     },
     versionKey: false,

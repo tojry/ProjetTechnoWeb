@@ -9,7 +9,7 @@ swagger:
   title: EasyQuizy API
   description: Projet de technologies web
   version: 1.0
-  tag: quiz
+  tag: user, quiz
   path: documentation
 mongodb:
-  uri: mongodb+srv://matthieugalante:hzMKl4e8jb5VvWIK@cluster0.fdds4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+  uri: mongodb+srv://theojoffroy:ofCH0kftINfsgNFF@technoweb.yospg.mongodb.net/?retryWrites=true&w=majority&appName=TechnoWeb #mongodb+srv://matthieugalante:hzMKl4e8jb5VvWIK@cluster0.fdds4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

@@ -1,5 +1,5 @@
 
-import { ConflictException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import { ConflictException, forwardRef, Inject, Injectable, NotFoundException, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {catchError, from, map, mergeMap, Observable, of, throwError} from "rxjs";
@@ -11,11 +11,14 @@ import { UserEntity } from './entities/user.entity';
 import { QuizzEntity } from 'src/quiz/entities/quizz.entity';
 import { UserDao } from './dao/user.dao';
 import * as bcrypt from 'bcrypt';
+import { QuizzService } from 'src/quiz/quizz.service';
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly _userDao: UserDao,
+        @Inject(forwardRef(() => QuizzService))
+        private readonly _quizService: QuizzService
     ) {}
 
     // Méthode pour créer un user
@@ -24,7 +27,7 @@ export class UserService {
             mergeMap((hashedUser: CreateAndPutUserDto) => 
                 this._userDao.save(hashedUser),
             ),
-            map((savedUser) => new UserEntity({ username: savedUser.username })),
+            map((savedUser) => new UserEntity(savedUser.username, [])),
             catchError((e) => 
                 e.code === 11000
                 ? throwError(() => new ConflictException('User with this username already exists'))
@@ -33,10 +36,12 @@ export class UserService {
     }
 
     findOne(id: string): Observable<UserEntity> {
+
         return from(this._userDao.findById(id)).pipe(
             mergeMap((user) => 
                 !!user 
-            ? of(new UserEntity({ username: user.username })) 
+            ? this._quizService.findByAuthor(user.username).pipe(
+                map((quizList) => new UserEntity(user.username, quizList)))
             : throwError(
                 () => new NotFoundException(`User with id '${id}' not found`))
             ),
@@ -50,9 +55,9 @@ export class UserService {
                 !!user 
             ? of({id: user._id,password: user.password}) 
             : throwError(
-                () => new NotFoundException(`User with username '${username}' not found`))
+                () => new UnauthorizedException('Invalid username or password'))
             ),
-            catchError((e) => throwError(() => new UnprocessableEntityException(e.message)))
+            catchError((e) => throwError(() => e))
         );
     }
 

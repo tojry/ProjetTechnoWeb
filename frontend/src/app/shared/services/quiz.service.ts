@@ -15,10 +15,7 @@ export class QuizService {
 
     return this._http.get<Quiz[]>(
       this._backend.routes.quiz
-    ).pipe(
-      filter((quizList: Quiz[]) => !!quizList),
-      defaultIfEmpty([])
-    );
+    );;
   }
 
   fetchOne(id: string): Observable<Quiz> {
@@ -47,10 +44,10 @@ export class QuizService {
     );
   }
 
-  update(quiz: Quiz): Observable<any> {
+  update(id: string, quiz: Quiz): Observable<any> {
     
     return this._http.put<Quiz>(
-      this._backend.routes.oneQuiz.replace(':id', quiz.id!.toString()),
+      this._backend.routes.oneQuiz.replace(':id', id),
       quiz,
       this._options()
     );

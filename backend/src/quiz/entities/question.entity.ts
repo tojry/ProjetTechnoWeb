@@ -5,10 +5,6 @@ import { Question } from "../schema/question.schema";
 @Exclude()
 export class QuestionEntity{
 
-    constructor(partial: Partial<Question>) {
-        Object.assign(this, partial);
-    }
-
     @ApiProperty({
         name: 'question',
         description: 'Text of the question',
