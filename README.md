@@ -44,6 +44,8 @@
   Erreurs: 401 si si l'id associé au token dans le header est différent de l'id de l'auteur du quiz
            404 si aucun quiz ne correspond à l'id
 
+- GET /quiz/search?keyword=
+
 ```
 - [x] Page de création de compte
 - [x] Page de connexion
@@ -55,4 +57,4 @@
 - [x] Suppression d'un quiz
 - [x] Affichage de la liste des quiz
 - [x] Affichage de le liste des quiz d'une catégorie
-- [ ] Recherche d'un quiz
+- [x] Recherche d'un quiz
