@@ -1,4 +1,8 @@
-# ProjetTechnoWeb
+# ProjetTechnoWeb - EasyQuizy
+
+Site de création et de partage de quiz
+
+Théo JOFFROY et Matthieu GALANTE
 
 ## Installation et exécution
 ```
